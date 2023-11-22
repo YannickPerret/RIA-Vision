@@ -1,12 +1,34 @@
-const AWSClient = require("./lib/aws");
+const AWSClient = require("./lib/providers/aws");
 const Factory = require("./lib/factory/factory");
+const VisionClient = require("./lib/visionHandler");
 
 const args = process.argv;
+let maxLabels = undefined;
+let minConfidence = undefined;
+let label = undefined;
+
+if (args[3] === "-label") {
+  label = args[4];
+}
+
+if (args[4] === "-maxlabel") {
+  maxLabels = args[5];
+}
+
+if (args[5] === "-confidence") {
+  minConfidence = args[6];
+}
 
 (async () => {
   try {
+    const Vision = new VisionClient("AWS");
     const base64Data = await Factory.encode(args[2], "base64");
-    const data = await AWSClient.parseElement(base64Data);
+    const data = await Vision.parseElement(
+      base64Data,
+      label,
+      maxLabels,
+      minConfidence
+    );
 
     for (let i = 0; i < data.Labels.length; i++) {
       console.log(
