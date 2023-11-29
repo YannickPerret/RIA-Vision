@@ -1,28 +1,25 @@
-const AWSClient = require("./lib/providers/aws");
 const Factory = require("./lib/factory/factory");
-const VisionClient = require("./lib/visionHandler");
+const VisionProvider = require("./lib/visionProvider");
 
 const args = process.argv;
-let maxLabels = undefined;
-let minConfidence = undefined;
-let label = undefined;
 
-if (args[3] === "-label") {
-  label = args[4];
-}
-
-if (args[4] === "-maxlabel") {
-  maxLabels = args[5];
-}
-
-if (args[5] === "-confidence") {
-  minConfidence = args[6];
-}
+let maxLabels = args[3] || undefined;
+let minConfidence = args[4] || undefined;
+let label = args[5] || null;
 
 (async () => {
   try {
-    const Vision = new VisionClient("AWS");
+    const Vision = VisionProvider.createClient({
+      cloud: "AWS",
+      region: "eu-central-1",
+      profile: "default",
+    });
     const base64Data = await Factory.encode(args[2], "base64");
+    if (!maxLabels || !minConfidence || !label) {
+      console.log(
+        "No maxLabels or minConfidence or label provided, using default values"
+      );
+    }
     const data = await Vision.parseElement(
       base64Data,
       label,
