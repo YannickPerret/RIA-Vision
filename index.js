@@ -1,31 +1,52 @@
 const Factory = require("./lib/factory/factory");
 const VisionProvider = require("./lib/visionProvider");
+const { db, r } = require("./lib/database/database");
 
 const args = process.argv;
 
-let maxLabels = args[3] || undefined;
-let minConfidence = args[4] || undefined;
-let label = args[5] || null;
+let maxLabels = Number(args[3]) || undefined;
+let minConfidence = Number(args[4]) || undefined;
+
+// create commande -?
+if (args[2] === "--help") {
+  console.log(
+    "\x1b[33mUsage: node index.js : <provider> <image> <maxLabels> <minConfidence>\x1b[0m"
+  );
+  return;
+}
 
 (async () => {
   try {
+
+    if(!args[2]) {
+      console.error("\x1b[31mPlease provide an image\x1b[0m");
+      return;
+    }
+
     const Vision = VisionProvider.createClient({
       cloud: "AWS",
       region: "eu-central-1",
       profile: "default",
     });
     const base64Data = await Factory.encode(args[2], "base64");
-    if (!maxLabels || !minConfidence || !label) {
-      console.log(
+    if (!maxLabels || !minConfidence) {
+      throw new Error(
         "No maxLabels or minConfidence or label provided, using default values"
       );
     }
     const data = await Vision.parseElement(
       base64Data,
-      label,
       maxLabels,
       minConfidence
     );
+    console.log(data.Labels.length);
+
+    if (data.Labels.length === 0) {
+      return new Error("No labels found");
+    }
+
+    // insert in rethnikdb data
+    await db.insert("image", data);
 
     for (let i = 0; i < data.Labels.length; i++) {
       console.log(
