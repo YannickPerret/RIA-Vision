@@ -1,88 +1,48 @@
-const VisionClient = require("../lib/visionProvider");
+const VisionProvider = require("../lib/visionProvider");
 
-describe("VisionClient", () => {
-  describe("VisionProvider", () => {
-    it("should return an error if the cloud provider is not valid", async () => {
-      const Vision = new VisionClient({ cloud: "ll" });
-      const image = "./assets/valid.jpg";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      await expect(
-        Vision.parseElement(image, label, maxLabels, minConfidence)
-      ).rejects.toThrow("Invalid cloud provider");
-    });
+describe("VisionProvider", () => {
+  it("should correctly initialize with AWS", () => {
+    expect(() => {
+      VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+    }).not.toThrow();
   });
 
-  describe("getDataByImage", () => {
-    it("should return an error if the image is not valid", async () => {
-      const Vision = new VisionClient({ cloud: "AWS" });
-      const image = "./assets/invalid.jpg";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      await expect(
-        Vision.parseElement(image, label, maxLabels, minConfidence)
-      ).rejects.toThrow("Request has invalid image format");
-    });
+  it("should throw an error if the cloud provider is not valid", () => {
+    expect(() => {
+      VisionProvider.createClient({ cloud: "InvalidProvider", region: "eu-central-1", profile: "default" });
+    }).toThrow("Invalid cloud provider");
+  });
+});
 
-    it("should return an error if the image is not found", async () => {
-      const Vision = new VisionClient({ cloud: "AWS" });
-      const image = "./assets/notfound.jpg";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      await expect(
-        Vision.parseElement(image, label, maxLabels, minConfidence)
-      ).rejects.toThrow(
-        "InvalidImageFormatException: Request has invalid image format"
-      );
-    });
+describe("getDataByImage", () => {
+  const Vision = VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
 
-    it("should return data if the image is valid", async () => {
-      const Vision = new VisionClient({ cloud: "AWS" });
-      const image = "./assets/valid.jpg";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      const data = await Vision.parseElement(
-        image,
-        label,
-        maxLabels,
-        minConfidence
-      );
-      expect(data).toBeDefined();
-    });
+  it("should return an error if the image is not valid", async () => {
+    const image = "./assets/invalid.jpg";
+    await expect(Vision.parseElement(image, 10, 60)).rejects.toThrow("Request has invalid image format");
   });
 
-  describe("getDataByURL", () => {
-    it("should return an error if the image url is not valid", async () => {
-      const Vision = new VisionClient({ cloud: "AWS" });
-      const image = "https://www.google.com";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      await expect(
-        Vision.parseElement(image, label, maxLabels, minConfidence)
-      ).rejects.toThrow(
-        "InvalidImageFormatException: Request has invalid image format"
-      );
-    });
+  it("should return data if the image is valid", async () => {
+    const image = "./assets/valid.jpg";
+    await expect(Vision.parseElement(image, 10, 60)).resolves.toBeDefined();
+  });
+});
 
-    it("should return data if the image url is valid", async () => {
-      const Vision = new VisionClient({ cloud: "AWS" });
-      const image =
-        "https://images.unsplash.com/photo-1562887107-2e7a9da7b1e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
-      const label = null;
-      const maxLabels = 10;
-      const minConfidence = 60;
-      const data = await Vision.parseElement(
-        image,
-        label,
-        maxLabels,
-        minConfidence
-      );
-      expect(data).toBeDefined();
-    });
+
+describe("getLabelsFromImage", () => {
+  const Vision = VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+  
+  it("should return the correct number of labels for a valid image", async () => {
+    const image = "./assets/valid.jpg";
+    const maxLabels = 15;
+    const data = await Vision.parseElement(image, maxLabels, 60);
+    expect(data.Labels.length).toEqual(maxLabels);
+  });
+
+  it("should return the correct number of labels for a valid image URL", async () => {
+    const imageUrl = "https://fastly.picsum.photos/id/291/200/300.jpg?hmac=5htP1HYHWPOMv5wbTtTsh6GjRk__SPxuXIv6gHLBHHg";
+    const maxLabels = 10;
+    const data = await Vision.parseElement(imageUrl, maxLabels, 60);
+    expect(data.Labels.length).toEqual(maxLabels);
   });
 });
