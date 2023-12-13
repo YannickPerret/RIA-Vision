@@ -25,31 +25,31 @@ if (args[2] === "--help") {
       return;
     }
     const bucket = new AwsDataObjectImpl(process.env.BUCKET_NAME, process.env.AWS_REGION, process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);
-
-    // upload image in s3
-    const dataBucketImage = await Factory.encode(args[2]);
-    const upload = await bucket.uploadObject('image/'+dataBucketImage, args[2]);
-    console.log(upload.Location);
-
     const Vision = LabelDetector.createClient({
       cloud: "AWS",
       region: "eu-central-1",
       profile: "default",
     });
 
+    const imageEncode = await Factory.encode(args[2]);
+    //upload image in s3
+    const upload = await bucket.uploadObject(imageEncode, 'images/'+args[2]);
+    const getImageAWS = await bucket.getImage(upload.Key)
 
-    const base64Data = await Factory.encode(args[2], "base64");
+    const image = await Factory.encode(getImageAWS);
+    
+
     if (!maxLabels || !minConfidence) {
       throw new Error("No maxLabels or minConfidence or label provided, using default values");
     }
-    const data = await Vision.analyze( base64Data, maxLabels, minConfidence);
-    console.log(data.Labels.length);
+    const data = await Vision.analyze(image, maxLabels, minConfidence);
 
     if (data.Labels.length === 0) {
       return new Error("No labels found");
     }
 
-    console.log(data)
+    
+
     // insert in rethnikdb data
     await db.insert("image", data);
 
