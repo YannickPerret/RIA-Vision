@@ -22,14 +22,14 @@ describe("getDataByImage", () => {
     const image = "./images/tests/invalid.jpg";
     const base64Data = await Factory.encode(image);
 
-    await expect(Vision.parseElement(base64Data, 10, 60)).rejects.toThrow("Request has invalid image format");
+    await expect(Vision.analyze(base64Data, 10, 60)).rejects.toThrow("Request has invalid image format");
   });
 
   it("should return data if the image is valid", async () => {
     const image = "./images/tests/valid.jpg";
     const base64Data = await Factory.encode(image);
 
-    await expect(Vision.parseElement(base64Data, 10, 60)).resolves.toBeDefined();
+    await expect(Vision.analyze(base64Data, 10, 60)).resolves.toBeDefined();
   });
 });
 
@@ -42,7 +42,7 @@ describe("getLabelsFromImage", () => {
     const base64Data = await Factory.encode(image);
 
     const maxLabels = 15;
-    const data = await Vision.parseElement(base64Data, maxLabels, 20);
+    const data = await Vision.analyze(base64Data, maxLabels, 20);
     expect(data.Labels.length).toEqual(maxLabels);
   });
 
@@ -50,7 +50,7 @@ describe("getLabelsFromImage", () => {
     const imageUrl = "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2022/09/wow-dragonflight-blizzard-1024x576.jpg?avif=1&key=3e271ace";
     const urlBase64 = await Factory.encode(imageUrl);
     const maxLabels = 10;
-    const data = await Vision.parseElement(urlBase64, maxLabels, 20);
+    const data = await Vision.analyze(urlBase64, maxLabels, 20);
     expect(data.Labels.length).toEqual(maxLabels);
   });
 });

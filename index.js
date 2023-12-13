@@ -42,13 +42,14 @@ if (args[2] === "--help") {
     if (!maxLabels || !minConfidence) {
       throw new Error("No maxLabels or minConfidence or label provided, using default values");
     }
-    const data = await Vision.parseElement( base64Data, maxLabels, minConfidence);
+    const data = await Vision.analyze( base64Data, maxLabels, minConfidence);
     console.log(data.Labels.length);
 
     if (data.Labels.length === 0) {
       return new Error("No labels found");
     }
 
+    console.log(data)
     // insert in rethnikdb data
     await db.insert("image", data);
 
