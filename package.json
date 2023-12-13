@@ -15,7 +15,8 @@
     "install": "^0.13.0",
     "npm": "^10.2.3",
     "rethinkdb": "^2.4.2",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0"

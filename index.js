@@ -2,7 +2,7 @@ const Factory = require("./lib/factory/factory");
 const LabelDetector = require("./lib/labelDetector");
 const { db, r } = require("./lib/database/database");
 const AwsDataObjectImpl = require("./lib/bucket/AwsDataObjectImpl");
-const { uuid } = require("rethinkdb");
+const { v4: uuidv4 } = require('uuid');
 require("dotenv").config();
 
 
@@ -25,6 +25,7 @@ if (args[2] === "--help") {
       return;
     }
     const bucket = new AwsDataObjectImpl(process.env.BUCKET_NAME, process.env.AWS_REGION, process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);
+
     // upload image in s3
     const dataBucketImage = await Factory.encode(args[2]);
     const upload = await bucket.uploadObject('image/'+dataBucketImage, args[2]);
@@ -50,7 +51,9 @@ if (args[2] === "--help") {
 
     // insert in rethnikdb data
     await db.insert("image", data);
-    await bucket.uploadObject(JSON.stringify(data), uuid()+".json");
+
+    // upload json in s3
+    await bucket.uploadObject(JSON.stringify(data), uuidv4()+".json");
 
     for (let i = 0; i < data.Labels.length; i++) {
       console.log(`Label : \x1b[33m${data.Labels[i].Name}\x1b[0m with confidence \x1b[33m${data.Labels[i].Confidence}\x1b[0m`);
