@@ -2,6 +2,7 @@ const Factory = require("./lib/factory/factory");
 const LabelDetector = require("./lib/labelDetector");
 const { db, r } = require("./lib/database/database");
 const BucketProvider = require("./lib/bucket/bucketProvider");
+require("dotenv").config();
 
 
 const args = process.argv;
@@ -33,6 +34,8 @@ if (args[2] === "--help") {
       region: "eu-central-1",
       profile: "default",
     });
+
+
     const base64Data = await Factory.encode(args[2], "base64");
     if (!maxLabels || !minConfidence) {
       throw new Error("No maxLabels or minConfidence or label provided, using default values");
