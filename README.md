@@ -12,6 +12,11 @@ cd bi1-vision
 npm install
 ```
 
+Installation de la base de donnée RethinkDB :
+```bash
+    sudo apt-get install rethinkdb
+```
+
 il faut ensuite copie le .env.example en .env et remplir les informations de connexion au SDK d'aws.
 
 ```bash
@@ -19,6 +24,11 @@ cp .env.example .env
 ```
 
 ## Lancement
+Dans un terminal il faut lancer la base de donnée RethinkDB :
+```bash
+rethinkdb
+```
+
 Pour lancer le projet, il faut utiliser la commande suivante :
 ```bash
 npm start
