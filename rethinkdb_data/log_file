@@ -75,3 +75,17 @@
 2023-12-06T14:30:27.781000000 0.062091s notice: Server ready, "yannicks_MacBook_Pro_local_5jf" 7389e23c-a131-4614-a676-35b65a02629d
 2023-12-06T14:30:29.261112000 1.542200s info: Table f0b32dd9-4b15-48f7-8602-44183cea43f1: Starting a new Raft election for term 2.
 2023-12-06T14:30:29.272183000 1.553270s info: Table f0b32dd9-4b15-48f7-8602-44183cea43f1: This server is Raft leader for term 2. Latest log index is 2.
+2023-12-13T14:10:12.921852000 0.014310s notice: Running rethinkdb 2.4.3 (arm64-apple-darwin22.4.0) (CLANG 14.0.3 (clang-1403.0.22.14.1))...
+2023-12-13T14:10:12.927111000 0.019569s notice: Running on Darwin 23.1.0 arm64
+2023-12-13T14:10:12.927154000 0.019612s notice: Loading data from directory /Users/tchoune/Documents/dev/js/Bi1/rethinkdb_data
+2023-12-13T14:10:12.946968000 0.039426s info: Automatically using cache size of 6371 MB
+2023-12-13T14:10:12.947556000 0.040014s notice: Listening for intracluster connections on port 29015
+2023-12-13T14:10:12.959107000 0.051565s notice: Listening for client driver connections on port 28015
+2023-12-13T14:10:12.959171000 0.051629s notice: Listening for administrative HTTP connections on port 8080
+2023-12-13T14:10:12.959176000 0.051634s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2023-12-13T14:10:12.959176001 0.051634s notice: Listening on driver addresses: 127.0.0.1, ::1
+2023-12-13T14:10:12.959177000 0.051635s notice: Listening on http addresses: 127.0.0.1, ::1
+2023-12-13T14:10:12.959180000 0.051638s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2023-12-13T14:10:12.959181000 0.051639s notice: Server ready, "yannicks_MacBook_Pro_local_5jf" 7389e23c-a131-4614-a676-35b65a02629d
+2023-12-13T14:10:14.519727000 1.612182s info: Table f0b32dd9-4b15-48f7-8602-44183cea43f1: Starting a new Raft election for term 3.
+2023-12-13T14:10:14.529327000 1.621782s info: Table f0b32dd9-4b15-48f7-8602-44183cea43f1: This server is Raft leader for term 3. Latest log index is 5.

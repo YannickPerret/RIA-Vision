@@ -1,22 +1,22 @@
-const VisionProvider = require("../lib/visionProvider");
+const LabelDetector = require("../lib/labelDetector");
 const Factory = require("../lib/factory/factory");
 
-describe("VisionProvider", () => {
+describe("LabelDetector", () => {
   it("should correctly initialize with AWS", () => {
     expect(() => {
-      VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+      LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
     }).not.toThrow();
   });
 
   it("should throw an error if the cloud provider is not valid", () => {
     expect(() => {
-      VisionProvider.createClient({ cloud: "InvalidProvider", region: "eu-central-1", profile: "default" });
+      LabelDetector.createClient({ cloud: "InvalidProvider", region: "eu-central-1", profile: "default" });
     }).toThrow("Invalid cloud provider");
   });
 });
 
 describe("getDataByImage", () => {
-  const Vision = VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+  const Vision = LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
 
   it("should return an error if the image is not valid", async () => {
     const image = "./images/tests/invalid.jpg";
@@ -35,7 +35,7 @@ describe("getDataByImage", () => {
 
 
 describe("getLabelsFromImage", () => {
-  const Vision = VisionProvider.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+  const Vision = LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
   
   it("should return the correct number of labels for a valid image", async () => {
     const image = "./images/tests/valid.jpg";
