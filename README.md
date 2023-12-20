@@ -45,3 +45,7 @@ Pour lancer les tests, il faut utiliser la commande suivante :
 ```bash
 npm test
 ```
+
+
+git submodule init
+git submodule update

@@ -52,6 +52,10 @@ function App() {
             .then(res => res.json())
             .then(data => {
               setReturnData(data.data);
+
+              setMaxLabel(10);
+              setMinConfidence(70);
+              setDataSource('');
             })
             .catch(err => {
               throw err;
@@ -62,6 +66,7 @@ function App() {
       console.log('err: ', err);
       setError(err);
     }
+
   }
 
   return (
