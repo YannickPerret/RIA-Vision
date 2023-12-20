@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './styles/App.css'
 
-const API_URL_UPLOAD = 'http://localhost:28469';
-const API_URL_ANALYZE = 'http://localhost:28468';
+const API_URL_UPLOAD = 'http://localhost:28468';
+const API_URL_ANALYZE = 'http://localhost:28469';
 
 function App() {
   const [dataSource, setDataSource] = useState('');
@@ -15,14 +15,14 @@ function App() {
     e.preventDefault();
     const fileInput = document.getElementById('dataSource');
     const file = fileInput.files[0];
+    let returnUrl = '';
 
     if (!file) {
       setError('Please select a file');
       return;
     }
-
     const formData = new FormData();
-    formData.append('image', file); // Assurez-vous que 'image' correspond au nom attendu côté serveur
+    formData.append('image', file);
 
     try {
       await fetch(`${API_URL_UPLOAD}/upload`, {
@@ -32,15 +32,24 @@ function App() {
         .then(res => res.json())
         .then(data => {
           console.log('data: ', data);
-          setReturnData(data);
+          returnUrl = data.url;
+        })
+        .catch(err => {
+          throw err;
         })
         .finally(async () => {
-          formData.append('maxLabel', maxLabel);
-          formData.append('minConfidence', minConfidence);
 
+          console.log('returnData: ', returnUrl)
           await fetch(`${API_URL_ANALYZE}/analyze`, {
             method: 'POST',
-            body: formData
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              url: returnUrl,
+              maxLabel: maxLabel,
+              minConfidence: minConfidence
+            })
           })
             .then(res => res.json())
             .then(data => {
