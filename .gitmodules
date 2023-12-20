@@ -1,0 +1,6 @@
+[submodule "dataObject"]
+	path = dataObject
+	url = https://github.com/YannickPerret/Bi_dataObject.git
+[submodule "labelDetector"]
+	path = labelDetector
+	url = https://github.com/YannickPerret/Bi_labelDetector.git
