@@ -10,16 +10,21 @@ function App() {
 
   const handleSubmitAnalyze = async (e) => {
     e.preventDefault();
-    console.log('dataSource: ', dataSource);
-    try {
-      if (!dataSource) setError('Please enter a data source');
+    const fileInput = document.getElementById('dataSource');
+    const file = fileInput.files[0];
 
-      await fetch(`${API_URL}/upload`, {
+    if (!file) {
+      setError('Please select a file');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file); // Assurez-vous que 'image' correspond au nom attendu côté serveur
+
+    try {
+      const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ dataSource })
+        body: formData
       })
         .then(res => res.json())
         .then(data => {
