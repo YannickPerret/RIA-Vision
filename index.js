@@ -1,7 +1,7 @@
 const Factory = require("./lib/factory/factory");
 const LabelDetector = require("./lib/labelDetector");
 const { db, r } = require("./lib/database/database");
-const AwsDataObjectImpl = require("./lib/bucket/AwsDataObjectImpl");
+const AwsDataObjectImpl = require("./dataObject/libs/AwsDataObjectImpl");
 const { v4: uuidv4 } = require('uuid');
 require("dotenv").config();
 
@@ -47,8 +47,6 @@ if (args[2] === "--help") {
     if (data.Labels.length === 0) {
       return new Error("No labels found");
     }
-
-    
 
     // insert in rethnikdb data
     await db.insert("image", data);
