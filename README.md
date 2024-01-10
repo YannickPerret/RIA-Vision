@@ -189,7 +189,47 @@ npm run test
 ```
 resultat attendu : 
 ```bash
+ FAIL  tests/interface.test.js
+  ● Test suite failed to run
 
+    Your test suite must contain at least one test.
+
+      at onResult (../../../../../../opt/homebrew/lib/node_modules/jest/node_modules/@jest/core/build/TestScheduler.js:133:18)
+          at Array.map (<anonymous>)
+
+(node:75124) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:75123) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+ PASS  labelDetector/tests/LabelDetector.test.js
+  ✓ Analyze_LocalFileWithDefaultValues_ImageAnalyzed (796 ms)
+  ✓ Analyze_RemoteImageWithDefaultValues_ImageAnalyzed (442 ms)
+  ✓ Analyze_RemoteImageWithCustomMaxLabelValue_ImageAnalyzed (325 ms)
+  ✓ Analyze_RemoteImageWithCustomMinConfidenceLevelValue_ImageAnalyzed (320 ms)
+  ✓ Analyze_RemoteImageWithCustomValues_ImageAnalyzed (457 ms)
+
+ PASS  dataObject/tests/AwsDataObjectImpl.test.js
+  ✓ doesBucketExist (238 ms)
+  ✓ DoesExist_ExistingObject_ObjectExists (344 ms)
+  ✓ DoesExist_MissingObject_ObjectNotExists (216 ms)
+  ✓ Upload_BucketAndLocalFileAreAvailable_NewObjectCreatedOnBucket (540 ms)
+  ✓ Download_ObjectAndLocalPathAvailable_ObjectDownloaded (450 ms)
+  ✓ Download_ObjectMissing_ThrowException (318 ms)
+  ✓ Publish_ObjectExists_PublicUrlCreated (391 ms)
+  ✓ Publish_ObjectMissing_ThrowException (198 ms)
+  ✓ Remove_ObjectPresentNoFolder_ObjectRemoved (660 ms)
+
+Test Suites: 1 failed, 2 passed, 3 total
+Tests:       14 passed, 14 total
+Snapshots:   0 total
+Time:        3.838 s, estimated 4 s
+Ran all test suites.
 ```
 
 ### On integration environment
