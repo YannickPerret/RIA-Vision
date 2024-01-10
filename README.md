@@ -215,13 +215,34 @@ How to deploy the application outside the dev environment.
 
   **Classes** : Noms en CamelCase avec un préfixe indiquant leur rôle, par exemple `AwsDataObjectImpl` pour une implémentation d'un objet de données AWS.
 
-  **Fonctions** : Noms en camelCase commençant par un verbe, par exemple encode(data).
+  **Fonctions** : Noms en camelCase commençant par un verbe, par exemple `encode(data)`.
 
-  **Variables et Instances** : Noms explicites en camelCase, comme bucketName ou fileContent.
+  **Variables et Instances** : Noms explicites en camelCase, comme `bucketName` ou `fileContent`.
 
   **Constantes** : Utilisez des majuscules avec des underscores, par exemple AWS.
 
   **Noms de Fichiers** : Pour les noms de fichiers, utilisez une lettre minuscule au début et pour les mots suivants, collez-les ensemble avec la première lettre de chaque nouveau mot en majuscule, comme `awsDataObjectImpl.js`.
+
+### Pattern de Protection de Branche
+
+1. **`main/master` :** 
+   - **Protection :** Cette branche est protégée. Les commits directs sont interdits.
+   - **Usage :** Seules les pull requests (PR) approuvées et testées peuvent être fusionnées dans `main/master`.
+   - **Revue de Code :** Chaque PR doit être revue et approuvée par au moins une autre personne de l'équipe.
+   - **Tests Automatiques :** Les tests automatisés doivent passer avant la fusion.
+
+2. **Branches de Développement (`dev`, `feature/*`, `bugfix/*`, etc.) :**
+   - **Protection :** Protection légère ou pas de protection. Selon les besoins du projet, vous pouvez choisir d'exiger des revues de code même pour ces branches.
+   - **Usage :** 
+     - `dev` sert de branche de développement principal.
+     - `feature/*` pour le développement de nouvelles fonctionnalités.
+     - `bugfix/*` pour les corrections de bugs.
+   - **Fusion :** Ces branches peuvent être fusionnées dans `main/master` une fois qu'elles sont complètes, testées, et approuvées.
+
+### Bonnes Pratiques
+- **Noms des Branches :** Utilisez des noms descriptifs pour vos branches, par exemple `feature: add-image-processing` ou `bugfix: login-issue`.
+- **Rebase et Squash :** Pour garder un historique propre, utilisez `rebase` pour mettre à jour votre branche avec `main/master` et `squash` vos commits avant de fusionner.
+- **Commits Fréquents, Petits et Significatifs :** Cela facilite les revues de code et la compréhension de l'historique des changements.
 
 ## License
 
