@@ -7,7 +7,7 @@ describe("AwsDataObjectImpl", () => {
   let awsDataObject;
   const fileContent = "file content";
   const objectUri = "valid.jpg";
-  const missingObjectUri = uuidv4()+".json";
+  const missingObjectUri = uuidv4() + ".json";
 
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe("AwsDataObjectImpl", () => {
       const bucketExists = await awsDataObject.doesBucketExist();
       expect(bucketExists).toBeTruthy();
     });
-    
+
     it("should confirm that the existing object exists", async () => {
       await awsDataObject.uploadObject(fileContent, objectUri);
       const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
@@ -31,22 +31,22 @@ describe("AwsDataObjectImpl", () => {
       const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
       expect(objectExists).toBeFalsy();
     });
-        
+
   });
 
   describe("uploadObject", () => {
     it("should create a new object in the bucket", async () => {
       const bucketExists = await awsDataObject.doesBucketExist();
       expect(bucketExists).toBeTruthy();
-    
+
       const objectNotExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
       expect(objectNotExists).toBeFalsy();
-    
+
       await awsDataObject.uploadObject(fileContent, objectUri);
       const objectExistsNow = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
       expect(objectExistsNow).toBeTruthy();
     });
-    
+
 
 
     it("should throw an error if an error occurs during file upload", async () => {
@@ -86,7 +86,7 @@ describe("AwsDataObjectImpl", () => {
     it("should throw an error when trying to download a missing object", async () => {
       const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
       expect(objectExists).toBeFalsy();
-    
+
       await expect(awsDataObject.downloadObject(missingObjectUri)).rejects.toThrow();
     });
   });
