@@ -5,61 +5,49 @@ const { v4: uuidv4 } = require('uuid');
 
 describe("AwsDataObjectImpl", () => {
   let awsDataObject;
+  const fileContent = "file content";
+  const objectUri = "valid.jpg";
+  const missingObjectUri = uuidv4()+".json";
+
 
   beforeEach(() => {
     awsDataObject = new AwsDataObjectImpl(process.env.BUCKET_NAME, process.env.AWS_REGION, process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);
-  });
 
-  afterEach(() => {
-    jest.restoreAllMocks();
   });
 
   describe("init", () => {
-    it("should create a new S3 instance and check if the bucket exists", async () => {
-      const mockHeadBucket = jest.spyOn(awsDataObject.s3, "headBucket").mockReturnValueOnce({
-        promise: jest.fn().mockResolvedValueOnce()
-      });
-
-      await awsDataObject.init();
-
-      expect(mockHeadBucket).toHaveBeenCalledWith({ Bucket: "my-bucket" });
-      expect(console.log).toHaveBeenCalledWith("Bucket exists. my-bucket");
+    it("should confirm that the existing bucket exists", async () => {
+      const bucketExists = await awsDataObject.doesBucketExist();
+      expect(bucketExists).toBeTruthy();
+    });
+    
+    it("should confirm that the existing object exists", async () => {
+      await awsDataObject.uploadObject(fileContent, objectUri);
+      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
+      expect(objectExists).toBeTruthy();
     });
 
-    it("should create a new S3 instance and create the bucket if it does not exist", async () => {
-      const mockHeadBucket = jest.spyOn(awsDataObject.s3, "headBucket").mockRejectedValueOnce({
-        code: "NotFound"
-      });
-      const mockCreateBucket = jest.spyOn(awsDataObject.s3, "createBucket").mockReturnValueOnce({
-        promise: jest.fn().mockResolvedValueOnce()
-      });
-
-      await awsDataObject.init();
-
-      expect(mockHeadBucket).toHaveBeenCalledWith({ Bucket: "my-bucket" });
-      expect(mockCreateBucket).toHaveBeenCalledWith({ Bucket: "my-bucket", ACL: "public-read" });
-      expect(console.log).toHaveBeenCalledWith("Bucket created successfully. my-bucket");
+    it("should confirm that a missing object does not exist", async () => {
+      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
+      expect(objectExists).toBeFalsy();
     });
+        
   });
 
   describe("uploadObject", () => {
-    it("should upload the file to the bucket and return the data", async () => {
-      const mockUpload = jest.spyOn(awsDataObject.s3, "upload").mockReturnValueOnce({
-        promise: jest.fn().mockResolvedValueOnce({ Location: "https://my-bucket.s3.amazonaws.com/my-file.jpg" })
-      });
-
-      const fileContent = "file content";
-      const fileName = "./images/tests/valid.jpg";
-      const result = await awsDataObject.uploadObject(fileContent, fileName);
-
-      expect(mockUpload).toHaveBeenCalledWith({
-        Bucket: "my-bucket",
-        Key: "my-file.jpg",
-        Body: "file content"
-      });
-      expect(console.log).toHaveBeenCalledWith("File uploaded successfully. https://my-bucket.s3.amazonaws.com/my-file.jpg");
-      expect(result).toEqual({ Location: "https://my-bucket.s3.amazonaws.com/my-file.jpg" });
+    it("should create a new object in the bucket", async () => {
+      const bucketExists = await awsDataObject.doesBucketExist();
+      expect(bucketExists).toBeTruthy();
+    
+      const objectNotExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
+      expect(objectNotExists).toBeFalsy();
+    
+      await awsDataObject.uploadObject(fileContent, objectUri);
+      const objectExistsNow = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
+      expect(objectExistsNow).toBeTruthy();
     });
+    
+
 
     it("should throw an error if an error occurs during file upload", async () => {
       const mockUpload = jest.spyOn(awsDataObject.s3, "upload").mockRejectedValueOnce(new Error("Upload error"));
@@ -95,18 +83,11 @@ describe("AwsDataObjectImpl", () => {
       expect(result).toEqual("file content");
     });
 
-    it("should throw an error if an error occurs during file download", async () => {
-      const mockGetObject = jest.spyOn(awsDataObject.s3, "getObject").mockRejectedValueOnce(new Error("Download error"));
-
-      const fileName = "my-file.jpg";
-
-      await expect(awsDataObject.downloadObject(fileName)).rejects.toThrow("Download error");
-
-      expect(mockGetObject).toHaveBeenCalledWith({
-        Bucket: "my-bucket",
-        Key: "my-file.jpg"
-      });
-      expect(console.error).toHaveBeenCalledWith("Error downloading file:", expect.any(Error));
+    it("should throw an error when trying to download a missing object", async () => {
+      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
+      expect(objectExists).toBeFalsy();
+    
+      await expect(awsDataObject.downloadObject(missingObjectUri)).rejects.toThrow();
     });
   });
 });
