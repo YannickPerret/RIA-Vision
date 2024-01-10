@@ -1,7 +1,10 @@
+// ajouter dans le wiki j'ai utilisé le finally pour faire le deuxième fetch de suite
+
+
 import { useState } from 'react'
 import './styles/App.css'
 
-const API_URL_UPLOAD = 'http://localhost:28468';
+const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
 
 function App() {
@@ -25,7 +28,7 @@ function App() {
     formData.append('image', file);
 
     try {
-      await fetch(`${API_URL_UPLOAD}/upload`, {
+      await fetch(`${API_URL_BUCKET}/upload`, {
         method: 'POST',
         body: formData
       })
