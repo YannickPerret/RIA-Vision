@@ -22,7 +22,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 * OS supported : MacOS, Linux, Windows
 * Environmment Node.js : minimum v21.0.0 
 * AWS-CLI : 2.0.0 (pour les tests)
-* AWS Rekognition
+* AWS Rekognition SDK V2 !
 
 ### Configuration
 
@@ -72,7 +72,7 @@ git clone https://github.com/YannickPerret/BI1-Vision.git bi1-vision
    - Le serveur RethinkDB démarre généralement sur le port `8080`. Accédez à `http://localhost:8080` pour visualiser le tableau de bord.
 
 #### Environment variables
-Il faut ensuite copie le .env.example en .env et remplir les informations de connexion au SDK d'aws.
+Il faut ensuite copie le .env.example en .env et remplir les informations de connexion au SDK d'aws et pour la base de donnée RethinkDB
 
 ```bash
 cp .env.example .env
@@ -85,12 +85,35 @@ cp .env.example .env
 Une fois le projet cloné et les prérequis installé, il faut installer les dépendances du projet avec la commande suivante :
 ```bash
 npm install
+git submodule foreach --recursive 'npm install'
 ```
 resultat attendu : 
 ```bash
-up to date, audited 305 packages in 738ms
+tchoune@yannicks-MacBook-Pro Bi1 % npm install                            
 
-102 packages are looking for funding
+added 302 packages, and audited 303 packages in 3s
+
+103 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+tchoune@yannicks-MacBook-Pro Bi1 % git submodule foreach --recursive 'npm install'
+
+Entering 'dataObject'
+npm WARN deprecated querystring@0.2.0: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+
+added 129 packages, and audited 130 packages in 898ms
+
+26 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Entering 'labelDetector'
+npm WARN deprecated querystring@0.2.0: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+
+added 105 packages, and audited 106 packages in 811ms
+
+20 packages are looking for funding
   run `npm fund` for details
 
 found 0 vulnerabilities
@@ -102,39 +125,59 @@ npm run dev:all
 ```
 resultat attendu : 
 ```bash
+> bi-frontend@0.0.0 dev:all
+> concurrently "npm run dev:db" "npm run dev:dataObject" "npm run dev:labelDetector" "npm run dev:current"
+
+[2] 
+[2] > bi-frontend@0.0.0 dev:labelDetector
+[2] > cd labelDetector && node index.js
+[2] 
+[3] 
+[3] > bi-frontend@0.0.0 dev:current
+[3] > vite
+[3] 
 [1] 
-[1] > bi-frontend@0.0.0 dev:labelDetector
-[1] > cd labelDetector && node index.js
+[1] > bi-frontend@0.0.0 dev:dataObject
+[1] > cd dataObject && node index.js
 [1] 
-[2] 
-[2] > bi-frontend@0.0.0 dev:current
-[2] > vite
-[2] 
 [0] 
-[0] > bi-frontend@0.0.0 dev:dataObject
-[0] > cd dataObject && node index.js
+[0] > bi-frontend@0.0.0 dev:db
+[0] > cd labelDetector && rethinkdb
 [0] 
+[0] Running rethinkdb 2.4.3 (arm64-apple-darwin22.4.0) (CLANG 14.0.3 (clang-1403.0.22.14.1))...
+[0] Running on Darwin 23.1.0 arm64
+[0] Loading data from directory /Users/tchoune/Documents/dev/js/Bi1/labelDetector/rethinkdb_data
+[0] Listening for intracluster connections on port 29015
+[0] Listening for client driver connections on port 28015
+[0] Listening for administrative HTTP connections on port 8080
+[0] Listening on cluster addresses: 127.0.0.1, ::1
+[0] Listening on driver addresses: 127.0.0.1, ::1
+[0] Listening on http addresses: 127.0.0.1, ::1
+[0] To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+[0] Server ready, "yannicks_MacBook_Pro_local_khy" a9ebc96e-e255-48e9-a70d-e5049d2e0d52
+[2] (node:69486) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
 [2] 
-[2]   VITE v5.0.10  ready in 122 ms
-[2] 
-[2]   ➜  Local:   http://localhost:5173/
-[2]   ➜  Network: use --host to expose
-[1] (node:11283) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+[2] Please migrate your code to use AWS SDK for JavaScript (v3).
+[2] For more information, check the migration guide at https://a.co/7PzMCcy
+[2] (Use `node --trace-warnings ...` to show where the warning was created)
+[2] {"level":30,"time":1704915981303,"pid":69486,"hostname":"yannicks-MBP.sunrise.box","msg":"Server listening at http://[::1]:28469"}
+[1] {"level":30,"time":1704915981303,"pid":69487,"hostname":"yannicks-MBP.sunrise.box","msg":"Server listening at http://127.0.0.1:28468"}
+[1] [DataObject] server listening on http://localhost:28468
+[2] {"level":30,"time":1704915981305,"pid":69486,"hostname":"yannicks-MBP.sunrise.box","msg":"Server listening at http://127.0.0.1:28469"}
+[2] [LABELDETECTOR] : server listening on 28469
+[1] (node:69487) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
 [1] 
 [1] Please migrate your code to use AWS SDK for JavaScript (v3).
 [1] For more information, check the migration guide at https://a.co/7PzMCcy
 [1] (Use `node --trace-warnings ...` to show where the warning was created)
-[1] {"level":30,"time":1704876379080,"pid":11283,"hostname":"yannicks-MacBook-Pro.local","msg":"Server listening at http://[::1]:28469"}
-[1] {"level":30,"time":1704876379082,"pid":11283,"hostname":"yannicks-MacBook-Pro.local","msg":"Server listening at http://127.0.0.1:28469"}
-[1] [LABELDETECTOR] : server listening on 28469
-[0] {"level":30,"time":1704876379132,"pid":11284,"hostname":"yannicks-MacBook-Pro.local","msg":"Server listening at http://127.0.0.1:28468"}
-[0] server listening on http://localhost:28468
-[0] (node:11284) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
-[0] 
-[0] Please migrate your code to use AWS SDK for JavaScript (v3).
-[0] For more information, check the migration guide at https://a.co/7PzMCcy
-[0] (Use `node --trace-warnings ...` to show where the warning was created)
-[0] Bucket exists. js.aws.cld.education
+[2] La base de données existe déjà
+[2] La table existe déjà
+[2] [LABELDETECTOR] : database bilizer and table images created
+[3] 
+[3]   VITE v5.0.11  ready in 271 ms
+[3] 
+[3]   ➜  Local:   http://localhost:5173/
+[3]   ➜  Network: use --host to expose
 ```
 
 Accédez ensuite à l'application via l'url suivante : http://localhost:5173/
@@ -170,17 +213,52 @@ dist/assets/index-XPzPoTB7.js   144.75 kB │ gzip: 46.60 kB
 ✓ built in 406ms
 ```
 
+Chaque service peut être lancer indépendamment des autres. Pour cela, il faut se rendre dans le dossier du service et lancer la commande suivante : 
+```bash
+npm run dev
+```
 
 
 
-How to deploy the application outside the dev environment.
+### Routes API
+Le sous-module `dataObject` est utilisé pour envoyer et récupérer des images depuis un bucket Amazon S3.
+#### POST `/upload`
+Permet de upload une image dans le bucket Amazon S3.
+- **Paramètres** : 
+  - `image` : Fichier image à télécharger.
+- **Réponse** : 
+  - Succès : `{ message: 'Image téléchargée avec succès.', url: [url de l'image] }`
+  - Erreur : `{ error: 'message d'erreur' }`
+
+
+  Le sous-module `LabelDetector` permet d'analyser une image et de recevoir les éléments reconnus sur l'image grâce à AWS Rekognition.
+#### POST `/analyze`
+Analyse une image et renvoie les labels détectés.
+- **Paramètres** :
+  - `url` : URL de l'image à analyser.
+  - `maxLabel` : Nombre maximal de labels à retourner.
+  - `minConfidence` : Seuil minimal de confiance pour les labels.
+- **Réponse** : 
+  - Succès : `{ message: 'Image analyzed with success', data: [données de l'analyse] }`
+  - Erreur : `{ error: 'message d'erreur' }`
+
+#### POST `/download`
+Télécharge un fichier SQL contenant les informations des images analysées.
+- **Paramètres** :
+  - `url` : URL de l'image pour laquelle les données sont requises.
+- **Réponse** : 
+  - Succès : Fichier SQL pour insertion dans une base de données.
+  - Erreur : `{ error: 'message d'erreur' }`
 
 ## Directory structure
 
 ```shell
 .
-├── dataObject //nodejs Bucket AWS
+├── dataObject    //nodejs Bucket AWS
 │   ├── libs
+│   ├── tests
+│   │   ├── download
+│   │   └── images
 │   └── uploads
 ├── dist
 │   └── assets
@@ -190,8 +268,11 @@ How to deploy the application outside the dev environment.
 │   │   └── providers
 │   └── rethinkdb_data
 │       └── tmp
+│   ├── tests
+│   │   ├── download
+│   │   └── images
 ├── public
-├── src
+├── src           //ReactJS
 │   ├── assets
 │   ├── components
 │   └── styles
@@ -201,15 +282,6 @@ How to deploy the application outside the dev environment.
 ```
 
 ## Collaborate
-
-* Take time to read some readme and find the way you would like to help other developers collaborate with you.
-
-* They need to know:
-  * How to propose a new feature (issue, pull request)
-  * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
-  * [How to use your workflow](https://nvie.com/posts/a-successful-git-branching-model/)
-  * How to report a bug
-  * Conventionnal naming
 
   ### Convention de Nommage
   Nous suivons une convention de nommage claire pour assurer une lisibilité et une maintenabilité élevées du code. Voici quelques exemples basés sur votre code :
@@ -241,7 +313,7 @@ How to deploy the application outside the dev environment.
    - **Fusion :** Ces branches peuvent être fusionnées dans `main/master` une fois qu'elles sont complètes, testées, et approuvées.
 
 ### Bonnes Pratiques
-- **Noms des Branches :** Utilisez des noms descriptifs pour vos branches, par exemple `feature: add-image-processing` ou `bugfix: login-issue`.
+- **Noms des commit :** Utilisez des noms descriptifs pour vos branches, par exemple `feature: add-image-processing` ou `bugfix: login-issue` ou si c'est un developpement courrant "verbe + action"
 - **Rebase et Squash :** Pour garder un historique propre, utilisez `rebase` pour mettre à jour votre branche avec `main/master` et `squash` vos commits avant de fusionner.
 - **Commits Fréquents, Petits et Significatifs :** Cela facilite les revues de code et la compréhension de l'historique des changements.
 
