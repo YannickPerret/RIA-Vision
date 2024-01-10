@@ -78,10 +78,8 @@ Il faut ensuite copie le .env.example en .env et remplir les informations de con
 cp .env.example .env
 ```
 
-> :warning: **La suite de la procédure est executée pour un environnement MacOs** Les commandes peuvent différer selon votre environnement.
-
-
 ## Deployment
+> :warning: **La suite de la procédure est executée pour un environnement MacOs** Les commandes peuvent différer selon votre environnement.
 
 ### On dev environment
 Une fois le projet cloné et les prérequis installé, il faut installer les dépendances du projet avec la commande suivante :
@@ -179,8 +177,6 @@ How to deploy the application outside the dev environment.
 
 ## Directory structure
 
-* Tip: try the tree bash command
-
 ```shell
 .
 ├── dataObject    // Nodejs server
@@ -211,6 +207,21 @@ How to deploy the application outside the dev environment.
   * How to propose a new feature (issue, pull request)
   * [How to commit](https://www.conventionalcommits.org/en/v1.0.0/)
   * [How to use your workflow](https://nvie.com/posts/a-successful-git-branching-model/)
+  * How to report a bug
+  * Conventionnal naming
+
+  ### Convention de Nommage
+  Nous suivons une convention de nommage claire pour assurer une lisibilité et une maintenabilité élevées du code. Voici quelques exemples basés sur votre code :
+
+  **Classes** : Noms en CamelCase avec un préfixe indiquant leur rôle, par exemple `AwsDataObjectImpl` pour une implémentation d'un objet de données AWS.
+
+  **Fonctions** : Noms en camelCase commençant par un verbe, par exemple encode(data).
+
+  **Variables et Instances** : Noms explicites en camelCase, comme bucketName ou fileContent.
+
+  **Constantes** : Utilisez des majuscules avec des underscores, par exemple AWS.
+
+  **Noms de Fichiers** : Pour les noms de fichiers, utilisez une lettre minuscule au début et pour les mots suivants, collez-les ensemble avec la première lettre de chaque nouveau mot en majuscule, comme `awsDataObjectImpl.js`.
 
 ## License
 
