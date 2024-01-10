@@ -20,7 +20,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 * IDE utilisé : Visual Studio Code 1.85.1
 * Gestionnaire de package : npm 10.1.0
 * OS supported : MacOS, Linux, Windows
-* Environmment Node.js : v20.7.0
+* Environmment Node.js : minimum v21.0.0 
 * AWS-CLI : 2.0.0 (pour les tests)
 * AWS Rekognition
 
@@ -179,22 +179,23 @@ How to deploy the application outside the dev environment.
 
 ```shell
 .
-├── dataObject    // Nodejs server
+├── dataObject //nodejs Bucket AWS
 │   ├── libs
 │   └── uploads
-├── dist          // Builded Reactjs web app
+├── dist
 │   └── assets
-├── labelDetector   // Nodejs server
-│   └── lib
-│       └── providers
+├── labelDetector //nodejs AWS Rekognition et RethinkDB
+│   ├── lib
+│   │   ├── database
+│   │   └── providers
+│   └── rethinkdb_data
+│       └── tmp
 ├── public
-├── rethinkdb_data   // RethinkDB data
-│   └── tmp
-├── src             // Reactjs web app
+├── src
 │   ├── assets
 │   ├── components
 │   └── styles
-└── tests           // Tests
+└── tests
     └── images
         └── tests
 ```
