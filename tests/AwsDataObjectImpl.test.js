@@ -1,93 +1,114 @@
-const AWS = require("aws-sdk");
-const AwsDataObjectImpl = require("../lib/bucket/AwsDataObjectImpl");
+const AwsDataObjectImpl = require('../dataObject/libs/AwsDataObjectImpl');
+const fs = require('fs');
 require("dotenv").config();
-const { v4: uuidv4 } = require('uuid');
+const https = require('https');
 
-describe("AwsDataObjectImpl", () => {
-  let awsDataObject;
-  const fileContent = "file content";
-  const objectUri = "valid.jpg";
-  const missingObjectUri = uuidv4() + ".json";
+const AWSBucket = new AwsDataObjectImpl(process.env.BUCKET_NAME, process.env.REGION, process.env.ACCESS_KEY_ID, process.env.SECRET_ACCESS_KEY);
+
+beforeEach(async () => {
+  // delete object test.jpg 
+  await AWSBucket.deleteObject("test.jpg");
+});
 
 
-  beforeEach(() => {
-    awsDataObject = new AwsDataObjectImpl(process.env.BUCKET_NAME, process.env.AWS_REGION, process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);
+test('doesBucketExist', async () => {
+  const bucketUri = process.env.BUCKET_NAME;
+  expect(await AWSBucket.doesBucketExist(bucketUri)).toBe(true);
+});
 
+test('DoesExist_ExistingObject_ObjectExists', async () => {
+  const localFile = "./images/valid.jpg";
+  const objectUri = "test.jpg";
+  const objectKey = await AWSBucket.uploadObject(localFile, objectUri);
+
+  expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(true);
+});
+
+test('DoesExist_MissingObject_ObjectNotExists', async () => {
+  const objectUri = "test.jpg";
+  expect(await AWSBucket.doesObjectExist(objectUri)).toBe(false);
+})
+
+test('Upload_BucketAndLocalFileAreAvailable_NewObjectCreatedOnBucket', async () => {
+  const localFile = "./images/valid.jpg";
+
+  const objectUri = "test.jpg";
+  const bucketUri = process.env.BUCKET_NAME;
+
+  expect(await AWSBucket.doesBucketExist(bucketUri)).toBe(true);
+  expect(await AWSBucket.doesObjectExist(objectUri)).toBe(false);
+
+  await AWSBucket.uploadObject(localFile, objectUri);
+
+  expect(await AWSBucket.doesObjectExist(objectUri)).toBe(true);
+});
+
+test('Download_ObjectAndLocalPathAvailable_ObjectDownloaded', async () => {
+  const localFile = "./images/valid.jpg";
+  const localDist = './download'
+  const objectUri = "test.jpg";
+  const objectKey = await AWSBucket.uploadObject(localFile, objectUri);
+
+  expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(true);
+  expect(fs.existsSync(localFile)).toBe(false);
+
+  await AWSBucket.downloadObject(objectUri, localDist);
+
+  expect(fs.existsSync(localFile)).toBe(true);
+});
+
+
+test('Download_ObjectMissing_ThrowException', async () => {
+  const localFile = "./images/validfd.jpg";
+  const objectUri = "test.jpg";
+
+  expect(await fs.existsSync(localFile)).toBe(false);
+
+  expect(await AWSBucket.doesObjectExist(objectUri)).toBe(false);
+
+  await expect(AWSBucket.downloadObject(objectUri)).rejects.toThrow("The specified key does not exist.");
+});
+
+
+test('Publish_ObjectExists_PublicUrlCreated', async () => {
+  const localFile = "./images/valid.jpg";
+  const objectUri = "test.jpg";
+  const destinationFolder = "./download";
+  const objectKey = await AWSBucket.uploadObject(localFile, objectUri);
+
+  expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(true);
+  expect(fs.existsSync(destinationFolder)).toBe(true);
+
+  const presignedUrl = await AWSBucket.publish(objectUri);
+
+  //download file via https
+  const file = fs.createWriteStream(destinationFolder + "/test.jpg");
+  const request = https.get(presignedUrl, function (response) {
+    response.pipe(file);
+    file.on('finish', function () {
+      file.close();
+    });
   });
 
-  describe("init", () => {
-    it("should confirm that the existing bucket exists", async () => {
-      const bucketExists = await awsDataObject.doesBucketExist();
-      expect(bucketExists).toBeTruthy();
-    });
+  expect(fs.existsSync(destinationFolder + "/test.jpg")).toBe(true);
+});
 
-    it("should confirm that the existing object exists", async () => {
-      await awsDataObject.uploadObject(fileContent, objectUri);
-      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
-      expect(objectExists).toBeTruthy();
-    });
+test('Publish_ObjectMissing_ThrowException', async () => {
+  const objectUri = "notvalidd.jpg";
+  expect(await AWSBucket.doesObjectExist(objectUri)).toBe(false);
 
-    it("should confirm that a missing object does not exist", async () => {
-      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
-      expect(objectExists).toBeFalsy();
-    });
+  await expect(AWSBucket.publish(objectUri)).rejects.toThrow("The specified key does not exist.");
 
-  });
+});
 
-  describe("uploadObject", () => {
-    it("should create a new object in the bucket", async () => {
-      const bucketExists = await awsDataObject.doesBucketExist();
-      expect(bucketExists).toBeTruthy();
+test('Remove_ObjectPresentNoFolder_ObjectRemoved', async () => {
+  const localFile = "./images/valid.jpg";
+  const objectUri = "test.jpg";
+  const objectKey = await AWSBucket.uploadObject(localFile, objectUri);
 
-      const objectNotExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
-      expect(objectNotExists).toBeFalsy();
+  expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(true);
 
-      await awsDataObject.uploadObject(fileContent, objectUri);
-      const objectExistsNow = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, objectUri);
-      expect(objectExistsNow).toBeTruthy();
-    });
+  await AWSBucket.deleteObject(objectUri);
 
-
-
-    it("should throw an error if an error occurs during file upload", async () => {
-      const mockUpload = jest.spyOn(awsDataObject.s3, "upload").mockRejectedValueOnce(new Error("Upload error"));
-
-      const fileContent = "file content";
-      const fileName = "my-file.jpg";
-
-      await expect(awsDataObject.uploadObject(fileContent, fileName)).rejects.toThrow("Upload error");
-
-      expect(mockUpload).toHaveBeenCalledWith({
-        Bucket: "my-bucket",
-        Key: "my-file.jpg",
-        Body: "file content"
-      });
-      expect(console.error).toHaveBeenCalledWith("Error uploading file:", expect.any(Error));
-    });
-  });
-
-  describe("downloadObject", () => {
-    it("should download the file from the bucket and return the file content", async () => {
-      const mockGetObject = jest.spyOn(awsDataObject.s3, "getObject").mockReturnValueOnce({
-        promise: jest.fn().mockResolvedValueOnce({ Body: "file content" })
-      });
-
-      const fileName = "my-file.jpg";
-      const result = await awsDataObject.downloadObject(fileName);
-
-      expect(mockGetObject).toHaveBeenCalledWith({
-        Bucket: "my-bucket",
-        Key: "my-file.jpg"
-      });
-      expect(console.log).toHaveBeenCalledWith("File downloaded successfully");
-      expect(result).toEqual("file content");
-    });
-
-    it("should throw an error when trying to download a missing object", async () => {
-      const objectExists = await AwsDataObjectImpl.doesObjectExist(awsDataObject.bucketName, missingObjectUri);
-      expect(objectExists).toBeFalsy();
-
-      await expect(awsDataObject.downloadObject(missingObjectUri)).rejects.toThrow();
-    });
-  });
+  expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(false);
 });
