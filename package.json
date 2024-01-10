@@ -10,6 +10,7 @@
     "dev:dataObject": "cd dataObject && node index.js",
     "dev:labelDetector": "cd labelDetector && node index.js",
     "dev:current": "vite",
+    "dev:server": "concurrently \"npm run dev:dataObject\" \"npm run dev:labelDetector\"",
     "dev:all": "concurrently \"npm run dev:dataObject\" \"npm run dev:labelDetector\" \"npm run dev:current\""
   },
   "dependencies": {
