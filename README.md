@@ -179,22 +179,23 @@ How to deploy the application outside the dev environment.
 
 ```shell
 .
-├── dataObject    // Nodejs server
+├── dataObject //nodejs Bucket AWS
 │   ├── libs
 │   └── uploads
-├── dist          // Builded Reactjs web app
+├── dist
 │   └── assets
-├── labelDetector   // Nodejs server
-│   └── lib
-│       └── providers
+├── labelDetector //nodejs AWS Rekognition et RethinkDB
+│   ├── lib
+│   │   ├── database
+│   │   └── providers
+│   └── rethinkdb_data
+│       └── tmp
 ├── public
-├── rethinkdb_data   // RethinkDB data
-│   └── tmp
-├── src             // Reactjs web app
+├── src
 │   ├── assets
 │   ├── components
 │   └── styles
-└── tests           // Tests
+└── tests
     └── images
         └── tests
 ```

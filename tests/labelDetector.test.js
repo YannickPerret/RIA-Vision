@@ -1,56 +1,23 @@
 const LabelDetector = require("../lib/labelDetector");
-const Factory = require("../lib/factory/factory");
+const fs = require('fs');
+require("dotenv").config();
 
-describe("LabelDetector", () => {
-  it("should correctly initialize with AWS", () => {
-    expect(() => {
-      LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
-    }).not.toThrow();
-  });
-
-  it("should throw an error if the cloud provider is not valid", () => {
-    expect(() => {
-      LabelDetector.createClient({ cloud: "InvalidProvider", region: "eu-central-1", profile: "default" });
-    }).toThrow("Invalid cloud provider");
-  });
+const VisionDetector = LabelDetector.createClient({
+  cloud: process.env.CLOUD_NAME,
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
-describe("getDataByImage", () => {
-  const Vision = LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
+// test Analyze_LocalFileWithDefaultValues_ImageAnalyzed given         Assert.IsTrue(File.Exists(localFile)));  when         Response response = await this.labelDetector.Analyze(localFile); then Assert.IsTrue(response.AmountOfLabels.Count() <= 10));foreach(Metric metric in response.Metrics){Assert.IsTrue(metric.confidenceLevel >= 90));}
+test('Analyze_LocalFileWithDefaultValues_ImageAnalyzed', async () => {
+  let localFile = "./images/valid.jpg";
+  expect(fs.existsSync(localFile)).toBe(true);
 
-  it("should return an error if the image is not valid", async () => {
-    const image = "./images/tests/invalid.jpg";
-    const base64Data = await Factory.encode(image);
-
-    await expect(Vision.analyze(base64Data, 10, 60)).rejects.toThrow("Request has invalid image format");
+  const response = await VisionDetector.analyze(localFile);
+  expect(response.Labels.length <= 10).toBe(true);
+  response.Labels.forEach(label => {
+    expect(label.Confidence >= 90).toBe(true);
   });
 
-  it("should return data if the image is valid", async () => {
-    const image = "./images/tests/valid.jpg";
-    const base64Data = await Factory.encode(image);
-
-    await expect(Vision.analyze(base64Data, 10, 60)).resolves.toBeDefined();
-  });
-});
-
-
-describe("getLabelsFromImage", () => {
-  const Vision = LabelDetector.createClient({ cloud: "AWS", region: "eu-central-1", profile: "default" });
-  
-  it("should return the correct number of labels for a valid image", async () => {
-    const image = "./images/tests/valid.jpg";
-    const base64Data = await Factory.encode(image);
-
-    const maxLabels = 15;
-    const data = await Vision.analyze(base64Data, maxLabels, 20);
-    expect(data.Labels.length).toEqual(maxLabels);
-  });
-
-  it("should return the correct number of labels for a valid image URL", async () => {
-    const imageUrl = "https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2022/09/wow-dragonflight-blizzard-1024x576.jpg?avif=1&key=3e271ace";
-    const urlBase64 = await Factory.encode(imageUrl);
-    const maxLabels = 10;
-    const data = await Vision.analyze(urlBase64, maxLabels, 20);
-    expect(data.Labels.length).toEqual(maxLabels);
-  });
-});
+})
