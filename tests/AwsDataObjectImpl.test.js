@@ -45,16 +45,17 @@ test('Upload_BucketAndLocalFileAreAvailable_NewObjectCreatedOnBucket', async () 
 
 test('Download_ObjectAndLocalPathAvailable_ObjectDownloaded', async () => {
   const localFile = "./images/valid.jpg";
-  const localDist = './download'
+  const localDist = './tests/download/test.jpg';
   const objectUri = "test.jpg";
   const objectKey = await AWSBucket.uploadObject(localFile, objectUri);
+  console.log(objectKey.Key);
 
   expect(await AWSBucket.doesObjectExist(objectKey.Key)).toBe(true);
   expect(fs.existsSync(localFile)).toBe(false);
 
   await AWSBucket.downloadObject(objectUri, localDist);
 
-  expect(fs.existsSync(localFile)).toBe(true);
+  expect(fs.existsSync(localDist)).toBe(true);
 });
 
 
