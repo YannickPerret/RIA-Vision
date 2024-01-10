@@ -7,11 +7,12 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "dev:db": "cd labelDetector && rethinkdb",
     "dev:dataObject": "cd dataObject && node index.js",
     "dev:labelDetector": "cd labelDetector && node index.js",
     "dev:current": "vite",
-    "dev:server": "concurrently \"npm run dev:dataObject\" \"npm run dev:labelDetector\"",
-    "dev:all": "concurrently \"npm run dev:dataObject\" \"npm run dev:labelDetector\" \"npm run dev:current\""
+    "dev:server": "concurrently \"npm run dev:db\" \"npm run dev:dataObject\" \"npm run dev:labelDetector\"",
+    "dev:all": "concurrently \"npm run dev:db\" \"npm run dev:dataObject\" \"npm run dev:labelDetector\" \"npm run dev:current\""
   },
   "dependencies": {
     "concurrently": "^8.2.2",
