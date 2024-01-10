@@ -20,7 +20,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 * IDE utilisé : Visual Studio Code 1.85.1
 * Gestionnaire de package : npm 10.1.0
 * OS supported : MacOS, Linux, Windows
-* Environmment Node.js : v20.7.0
+* Environmment Node.js : minimum v21.0.0
 * AWS-CLI : 2.0.0 (pour les tests)
 * AWS Rekognition
 
