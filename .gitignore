@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 rethinkdb_data
-package-lock.json
+package-*.json
 
 .env
