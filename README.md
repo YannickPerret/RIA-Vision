@@ -363,4 +363,4 @@ Le projet est sous licence MIT
 
 ## Contact
 
-Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com
+Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com et par Teams Yannick Perret
