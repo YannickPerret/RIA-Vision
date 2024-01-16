@@ -29,7 +29,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 #### Clone the repository
 Récupérer le projet sur votre machine en utilisant la commande suivante :
 ```bash
-git clone https://github.com/YannickPerret/BI1-Vision.git bi1-vision
+git clone --recurse-submodules https://github.com/YannickPerret/BI1-Vision.git bi1-vision
 ```
 
 #### Installation de RethinkDB
