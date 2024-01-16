@@ -32,6 +32,36 @@ Récupérer le projet sur votre machine en utilisant la commande suivante :
 git clone --recurse-submodules https://github.com/YannickPerret/BI1-Vision.git bi1-vision
 ```
 
+Résultat attendu : 
+```bash
+tchoune@yannicks-MBP js % git clone --recurse-submodules https://github.com/YannickPerret/BI1-Vision.git bi1-vision
+Cloning into 'bi1-vision'...
+remote: Enumerating objects: 377, done.
+remote: Counting objects: 100% (51/51), done.
+remote: Compressing objects: 100% (39/39), done.
+remote: Total 377 (delta 27), reused 24 (delta 11), pack-reused 326
+Receiving objects: 100% (377/377), 1.00 MiB | 3.90 MiB/s, done.
+Resolving deltas: 100% (183/183), done.
+Submodule 'dataObject' (https://github.com/YannickPerret/Bi_dataObject.git) registered for path 'dataObject'
+Submodule 'labelDetector' (https://github.com/YannickPerret/Bi_labelDetector.git) registered for path 'labelDetector'
+Cloning into '/Users/tchoune/Documents/dev/js/bi1-vision/dataObject'...
+remote: Enumerating objects: 68, done.        
+remote: Counting objects: 100% (68/68), done.        
+remote: Compressing objects: 100% (42/42), done.        
+remote: Total 68 (delta 25), reused 60 (delta 18), pack-reused 0        
+Receiving objects: 100% (68/68), 1.35 MiB | 9.91 MiB/s, done.
+Resolving deltas: 100% (25/25), done.
+Cloning into '/Users/tchoune/Documents/dev/js/bi1-vision/labelDetector'...
+remote: Enumerating objects: 98, done.        
+remote: Counting objects: 100% (98/98), done.        
+remote: Compressing objects: 100% (66/66), done.        
+remote: Total 98 (delta 41), reused 78 (delta 24), pack-reused 0        
+Receiving objects: 100% (98/98), 699.56 KiB | 7.77 MiB/s, done.
+Resolving deltas: 100% (41/41), done.
+Submodule path 'dataObject': checked out '78c6a29896993cf256171dcb7bda74089e955fcd'
+Submodule path 'labelDetector': checked out '5e13d50265ca67d4f9f060d99386210dc9063ca5'
+```
+
 #### Installation de RethinkDB
 
 ##### macOS
