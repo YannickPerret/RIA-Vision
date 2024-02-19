@@ -1,6 +1,3 @@
-// ajouter dans le wiki j'ai utilisé le finally pour faire le deuxième fetch de suite
-
-
 import { useState } from 'react'
 import './styles/App.css'
 
