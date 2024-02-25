@@ -33,6 +33,9 @@ function App() {
         .then(data => {
           console.log('data: ', data);
           returnUrl = data.url;
+          if (data.status === 500) {
+            throw new Error(data.error);
+          }
         })
         .catch(err => {
           throw err;

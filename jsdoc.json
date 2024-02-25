@@ -1,0 +1,13 @@
+{
+    "source": {
+        "include": [
+            "dataObject/libs",
+            "labelDetector/libs"
+        ],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "opts": {
+        "destination": "docs"
+    }
+}
