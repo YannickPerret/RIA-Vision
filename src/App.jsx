@@ -1,6 +1,3 @@
-// ajouter dans le wiki j'ai utilisé le finally pour faire le deuxième fetch de suite
-
-
 import { useState } from 'react'
 import './styles/App.css'
 
@@ -36,6 +33,9 @@ function App() {
         .then(data => {
           console.log('data: ', data);
           returnUrl = data.url;
+          if (data.status === 500) {
+            throw new Error(data.error);
+          }
         })
         .catch(err => {
           throw err;
