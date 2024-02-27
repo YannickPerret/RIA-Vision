@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react'
 import './styles/App.css'
 import FileUpload from './components/FileUpload';
+import { useLanguage } from './providers/languages';
 
 const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
 
-function App() {
+export default function App() {
   const [dataSource, setDataSource] = useState('');
   const [error, setError] = useState(null);
   const [returnData, setReturnData] = useState();
   const [maxLabel, setMaxLabel] = useState(10);
   const [minConfidence, setMinConfidence] = useState(70);
-  const [language, setLanguage] = useState(localStorage.getItem('language') || navigator.language.slice(0, 2));
-  const [translations, setTranslations] = useState({});
-
+  const { language, translations, handleLanguageChange } = useLanguage();
 
   const handleSubmitAnalyze = async (e) => {
     e.preventDefault();
@@ -104,27 +103,9 @@ function App() {
     }
   };
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
-
   const handleUploadedFiles = (files) => {
     setDataSource(files);
   };
-
-  useEffect(() => {
-    fetch('langages/langages.json')
-      .then(response => response.json())
-      .then(data => {
-        if (!data[language]) {
-          setLanguage('en');
-        }
-        setTranslations(data[language]);
-        localStorage.setItem('language', language);
-      });
-
-
-  }, [language]);
 
   return (
     <>
@@ -134,10 +115,11 @@ function App() {
         </div>
 
         <form>
-          <select id="language" value={language} onChange={handleLanguageChange}>
+          <select id="language" value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
             <option value="en">English</option>
             <option value="fr">French</option>
           </select>
+
         </form>
 
         <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
@@ -175,5 +157,3 @@ function App() {
     </>
   )
 }
-
-export default App
