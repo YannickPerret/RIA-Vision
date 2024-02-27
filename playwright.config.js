@@ -5,6 +5,7 @@ export default defineConfig({
     use: {
         headless: true,
         viewport: { width: 1280, height: 720 },
+        baseURL: 'http://127.0.0.1:5173/',
     },
     projects: [
         { name: 'Chromium', use: { ...devices['Desktop Chrome'] } },
