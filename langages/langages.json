@@ -26,29 +26,3 @@
         "labelFileUpload": "Glisser-déposer des fichiers ici ou cliquer pour parcourir"
     }
 }
-{
-    "en": {
-        "title": "Image analysis",
-        "description": "Analyze an image with a machine learning model.",
-        "dataSource": "Data source",
-        "maxLabel": "Max label",
-        "minConfidence": "Min confidence",
-        "analyze": "Analyze",
-        "labels": "Labels",
-        "confidence": "Confidence",
-        "averageConfidence": "Average confidence",
-        "downloadSQL": "Download SQL"
-    },
-    "fr": {
-        "title": "Analyse d'image",
-        "description": "Analyser une image avec un modèle de machine learning.",
-        "dataSource": "Source de données",
-        "maxLabel": "Max étiquettes",
-        "minConfidence": "Confiance minimale",
-        "analyze": "Analyser",
-        "labels": "Étiquettes",
-        "confidence": "Confiance",
-        "averageConfidence": "Confiance moyenne",
-        "downloadSQL": "Télécharger SQL"
-    }
-}
