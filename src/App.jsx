@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './styles/App.css'
+import FileUpload from './components/FileUpload';
 
 const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
@@ -108,6 +109,10 @@ function App() {
     setLanguage(e.target.value);
   };
 
+  const handleUploadedFiles = (files) => {
+    setDataSource(files);
+  };
+
   useEffect(() => {
     fetch('langages/langages.json')
       .then(response => response.json())
@@ -118,6 +123,8 @@ function App() {
         setTranslations(data[language]);
         localStorage.setItem('language', language);
       });
+
+
   }, [language]);
 
   return (
@@ -128,7 +135,6 @@ function App() {
         </div>
 
         <form>
-          <label htmlFor="language">Language:</label>
           <select id="language" value={language} onChange={handleLanguageChange}>
             <option value="en">English</option>
             <option value="fr">French</option>
@@ -136,8 +142,11 @@ function App() {
         </form>
 
         <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
+          <h1>{translations.title}</h1>
+          <p>{translations.description}</p>
           <label htmlFor="dataSource">{translations.dataSource}</label>
-          <input type="file" name="name" id='dataSource' value={dataSource} onChange={(e) => setDataSource(e.target.value)} accept='image/png, image/jpeg, image/webp' />
+          <br />
+          <FileUpload handleUploadedFiles={handleUploadedFiles} />
           <label htmlFor="maxLabel">{translations.maxLabel}</label>
           <input type="number" name="maxLabel" id="maxLabel" value={maxLabel} onChange={(e) => setMaxLabel(e.target.value)} min={1} />
           <label htmlFor="minConfidence">{translations.minConfidence}</label>
