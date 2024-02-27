@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './styles/App.css'
 
 const API_URL_BUCKET = 'http://localhost:28468';
@@ -104,6 +104,10 @@ function App() {
     }
   };
 
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+  };
+
   useEffect(() => {
     fetch('langages/langages.json')
       .then(response => response.json())
@@ -122,6 +126,14 @@ function App() {
         <div>
           {error && <div>{error}</div>}
         </div>
+
+        <form>
+          <label htmlFor="language">Language:</label>
+          <select id="language" value={language} onChange={handleLanguageChange}>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+          </select>
+        </form>
 
         <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
           <label htmlFor="dataSource">{translations.dataSource}</label>
