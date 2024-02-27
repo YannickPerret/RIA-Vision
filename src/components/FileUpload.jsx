@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useLanguage } from '../providers/languages';
 const FileUpload = ({ handleUploadedFiles }) => {
-    const [language, setLanguage] = useState(localStorage.getItem('language') || navigator.language.slice(0, 2));
-    const [translations, setTranslations] = useState({});
+
+
+    const { translations } = useLanguage();
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
         accept: 'image/*',
@@ -12,17 +14,8 @@ const FileUpload = ({ handleUploadedFiles }) => {
             handleUploadedFiles(acceptedFiles);
         },
     });
-    useEffect(() => {
-        fetch('langages/langages.json')
-            .then(response => response.json())
-            .then(data => {
-                if (!data[language]) {
-                    setLanguage('en');
-                }
-                setTranslations(data[language]);
-                localStorage.setItem('language', language);
-            });
-    }, [language]);
+    console.log('translations: ', translations);
+
     return (
         <div {...getRootProps()} style={{ border: '3px dashed black', margin: '20px', padding: '20px' }}>
             <input {...getInputProps()} />
