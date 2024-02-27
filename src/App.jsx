@@ -17,8 +17,8 @@ function App() {
 
   const handleSubmitAnalyze = async (e) => {
     e.preventDefault();
-    const fileInput = document.getElementById('dataSource');
-    const file = fileInput.files[0];
+    const file = dataSource[0];
+
     let returnUrl = '';
 
     if (!file) {
@@ -78,7 +78,6 @@ function App() {
 
   const handleDownloadSQL = async () => {
     try {
-      console.log('returnData.url: ', returnData)
       const response = await fetch(`${API_URL_ANALYZE}/download`, {
         method: 'POST',
         headers: {
