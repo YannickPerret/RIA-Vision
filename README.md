@@ -23,6 +23,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 * Environmment Node.js : minimum v21.0.0 
 * AWS-CLI : 2.0.0 (pour les tests)
 * AWS Rekognition SDK V2 !
+* Reactjs : 18.2.0
 
 ### Configuration
 
