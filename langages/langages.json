@@ -9,7 +9,8 @@
         "labels": "Labels",
         "confidence": "Confidence",
         "averageConfidence": "Average confidence",
-        "downloadSQL": "Download SQL"
+        "downloadSQL": "Download SQL",
+        "labelFileUpload": "Drag and drop files here or click to browse"
     },
     "fr": {
         "title": "Analyse d'image",
@@ -21,6 +22,7 @@
         "labels": "Étiquettes",
         "confidence": "Confiance",
         "averageConfidence": "Confiance moyenne",
-        "downloadSQL": "Télécharger SQL"
+        "downloadSQL": "Télécharger SQL",
+        "labelFileUpload": "Glisser-déposer des fichiers ici ou cliquer pour parcourir"
     }
 }
