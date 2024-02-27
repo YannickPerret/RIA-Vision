@@ -4,7 +4,7 @@
 
 Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite analysée par un moteur d'intelligence artificielle pour générer des labels précis et pertinents.
 
-### Features
+### Fonctionnalités
 - Upload d'Image : Interface utilisateur conviviale pour uploader facilement des images.
 - Reconnaissance IA : Utilisation d'AWS Rekognition pour une analyse d'image fiable et avancée. La flexibilité du système permet une intégration future avec d'autres API de reconnaissance d'image.
 - Technologies Utilisées : Développé avec Node.js et React.js, garantissant une expérience utilisateur fluide et une intégration backend robuste.
@@ -12,7 +12,7 @@ Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite an
 
 ## Getting Started
 
-### Prerequisites
+### Pré-requis
 
 Retrouvez la liste de tout les pré-requis pour lancer le projet.
 
@@ -27,7 +27,7 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 
 ### Configuration
 
-#### Clone the repository
+#### Cloner le Projet
 Récupérer le projet sur votre machine en utilisant la commande suivante :
 ```bash
 git clone --recurse-submodules https://github.com/YannickPerret/BI1-Vision.git bi1-vision
@@ -102,17 +102,17 @@ Submodule path 'labelDetector': checked out '5e13d50265ca67d4f9f060d99386210dc90
     ```
    - Le serveur RethinkDB démarre généralement sur le port `8080`. Accédez à `http://localhost:8080` pour visualiser le tableau de bord.
 
-#### Environment variables
+#### Variables d'Environnement
 Il faut ensuite copie le .env.example en .env et remplir les informations de connexion au SDK d'aws et pour la base de donnée RethinkDB
 
 ```bash
 cp .env.example .env
 ```
 
-## Deployment
+## Installation
 > :warning: **La suite de la procédure est executée pour un environnement MacOs** Les commandes peuvent différer selon votre environnement.
 
-### On dev environment
+### Sur l'environnement de développement
 Une fois le projet cloné et les prérequis installé, il faut installer les dépendances du projet avec la commande suivante :
 ```bash
 npm install
@@ -263,7 +263,42 @@ Time:        3.838 s, estimated 4 s
 Ran all test suites.
 ```
 
-### On integration environment
+Pour lancer un test spécifique, utilisez la commande suivante : 
+```bash
+jest tests
+```
+
+par exemple : 
+```bash
+jest labelDetector/tests/LabelDetector.test.js 
+```
+avec le resultat suivant : 
+```bash
+tchoune@yannicks-MacBook-Pro bi1-vision % jest labelDetector/tests/LabelDetector.test.js 
+watchman warning:  opendir(/Users/tchoune/Library/Containers/com.apple.corerecents.recentsd/Data/Library/Recents) -> Operation not permitted. Marking this portion of the tree deleted
+To clear this warning, run:
+`watchman watch-del '/Users/tchoune' ; watchman watch-project '/Users/tchoune'`
+
+(node:68111) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+ PASS  labelDetector/tests/LabelDetector.test.js
+  ✓ Analyze_LocalFileWithDefaultValues_ImageAnalyzed (833 ms)
+  ✓ Analyze_RemoteImageWithDefaultValues_ImageAnalyzed (608 ms)
+  ✓ Analyze_RemoteImageWithCustomMaxLabelValue_ImageAnalyzed (346 ms)
+  ✓ Analyze_RemoteImageWithCustomMinConfidenceLevelValue_ImageAnalyzed (318 ms)
+  ✓ Analyze_RemoteImageWithCustomValues_ImageAnalyzed (319 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        2.721 s, estimated 3 s
+Ran all test suites matching /labelDetector\/tests\/LabelDetector.test.js/i.
+```
+
+### Sur l'environnement de production
 
 Commençons par build l'interface web avec la commande suivante : 
 ```bash
@@ -321,7 +356,7 @@ Télécharge un fichier SQL contenant les informations des images analysées.
   - Succès : Fichier SQL pour insertion dans une base de données.
   - Erreur : `{ error: 'message d'erreur' }`
 
-## Directory structure
+## Structure du Projet
 
 ```shell
 .
@@ -352,7 +387,7 @@ Télécharge un fichier SQL contenant les informations des images analysées.
         └── tests
 ```
 
-## Collaborate
+## Contribuer au Projet
 
   ### Convention de Nommage
   Nous suivons une convention de nommage claire pour assurer une lisibilité et une maintenabilité élevées du code. Voici quelques exemples basés sur votre code :
@@ -394,4 +429,4 @@ Le projet est sous licence MIT
 
 ## Contact
 
-Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com
+Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com ou via une issue sur le projet github
