@@ -27,3 +27,4 @@ rethinkdb_data
 package-lock.json
 
 .env
+test-results
