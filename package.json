@@ -13,7 +13,8 @@
     "dev:current": "vite",
     "dev:server": "concurrently \"npm run dev:db\" \"npm run dev:dataObject\" \"npm run dev:labelDetector\"",
     "dev:all": "concurrently \"npm run dev:db\" \"npm run dev:dataObject\" \"npm run dev:labelDetector\" \"npm run dev:current\"",
-    "test": "jest --watchAll --verbose"
+    "test": "jest --watchAll --verbose",
+    "test:frontend": "npx playwright test"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
@@ -22,6 +23,8 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^10.3.1",
+    "@playwright/test": "^1.41.2",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
