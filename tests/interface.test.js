@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('React View DDD Tests', () => {
+test.describe('React View BDD Tests', () => {
 
     // Test with an existing image and default form values
     test('submit analysis with an existing image and default values', async ({ page }) => {
