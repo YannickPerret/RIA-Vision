@@ -1,0 +1,22 @@
+{
+    "en": {
+        "dataSource": "Data source",
+        "maxLabel": "Max label",
+        "minConfidence": "Min confidence",
+        "analyze": "Analyze",
+        "labels": "Labels",
+        "confidence": "Confidence",
+        "averageConfidence": "Average confidence",
+        "downloadSQL": "Download SQL"
+    },
+    "fr": {
+        "dataSource": "Source de données",
+        "maxLabel": "Max étiquettes",
+        "minConfidence": "Confiance minimale",
+        "analyze": "Analyser",
+        "labels": "Étiquettes",
+        "confidence": "Confiance",
+        "averageConfidence": "Confiance moyenne",
+        "downloadSQL": "Télécharger SQL"
+    }
+}

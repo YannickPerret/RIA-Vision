@@ -10,6 +10,9 @@ function App() {
   const [returnData, setReturnData] = useState();
   const [maxLabel, setMaxLabel] = useState(10);
   const [minConfidence, setMinConfidence] = useState(70);
+  const [language, setLanguage] = useState(localStorage.getItem('language') || navigator.language.slice(0, 2));
+  const [translations, setTranslations] = useState({});
+
 
   const handleSubmitAnalyze = async (e) => {
     e.preventDefault();
@@ -101,6 +104,18 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    fetch('langages/langages.json')
+      .then(response => response.json())
+      .then(data => {
+        if (!data[language]) {
+          setLanguage('en');
+        }
+        setTranslations(data[language]);
+        localStorage.setItem('language', language);
+      });
+  }, [language]);
+
   return (
     <>
       <div>
@@ -109,22 +124,22 @@ function App() {
         </div>
 
         <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
-          <label htmlFor="dataSource">Data source</label>
+          <label htmlFor="dataSource">{translations.dataSource}</label>
           <input type="file" name="name" id='dataSource' value={dataSource} onChange={(e) => setDataSource(e.target.value)} accept='image/png, image/jpeg, image/webp' />
-          <label htmlFor="maxLabel">Max label</label>
+          <label htmlFor="maxLabel">{translations.maxLabel}</label>
           <input type="number" name="maxLabel" id="maxLabel" value={maxLabel} onChange={(e) => setMaxLabel(e.target.value)} min={1} />
-          <label htmlFor="minConfidence">Min confidence</label>
+          <label htmlFor="minConfidence">{translations.minConfidence}</label>
           <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} />
           <br />
-          <button>Analyze</button>
+          <button>{translations.analyze}</button>
         </form>
 
         <div>
           {returnData && (
             <>
-              {returnData.numberOfLabel > 0 && <div>Labels: {returnData.numberOfLabel}</div>}
-              {returnData.MinConfidence > 0 && <div>Confidence: {returnData.MinConfidence.toFixed(2)}%</div>}
-              {returnData.averageConfidence > 0 && <div>Average confidence: {returnData.averageConfidence.toFixed(2)}%</div>}
+              {returnData.numberOfLabel > 0 && <div>{translations.labels}: {returnData.numberOfLabel}</div>}
+              {returnData.MinConfidence > 0 && <div>{translations.confidence}: {returnData.MinConfidence.toFixed(2)}%</div>}
+              {returnData.averageConfidence > 0 && <div>{translations.averageConfidence}: {returnData.averageConfidence.toFixed(2)}%</div>}
               <br />
               {returnData.Labels?.map((label, index) => (
                 <div key={index}>
@@ -132,7 +147,7 @@ function App() {
                 </div>
               ))}
 
-              <button onClick={() => handleDownloadSQL()}>Download SQL</button>
+              <button onClick={() => handleDownloadSQL()}>{translations.downloadSQL}</button>
             </>
           )}
         </div>
