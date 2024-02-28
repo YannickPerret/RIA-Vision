@@ -48,6 +48,22 @@ test.describe('Form Submission Tests', () => {
         await page.waitForSelector('text=Error Message for minConfidence');
         await expect(page.locator('text=Error Message for minConfidence')).toBeVisible();
     });
+});
+
+test.describe('Form Submission Tests', () => {
+
+    test.beforeEach(async ({ page }) => {
+        await page.goto('http://localhost:5173');
+    });
+
+    test('submit form with non-conform minConfidence value', async ({ page }) => {
+        await page.setInputFiles('input[type="file"]', 'tests/images/valid.jpg');
+        await page.fill('#maxLabel', '10');
+        await page.fill('#minConfidence', '101');
+        await page.click('button >> text=Analyze');
+        await page.waitForSelector('text=minConfidence must be between 0 and 100');
+        await expect(page.locator('text=minConfidence must be between 0 and 100')).toBeVisible();
+    });
 
     test('submit form with changed values for maxLabel and minConfidence', async ({ page }) => {
         await page.setInputFiles('input[type="file"]', 'tests/images/valid.jpg');

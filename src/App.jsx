@@ -2,17 +2,24 @@ import { useState, useEffect } from 'react'
 import './styles/App.css'
 import FileUpload from './components/FileUpload';
 import { useLanguage } from './providers/languages';
+import Languages from './components/Languages';
+import Error from './components/Error';
+import DataResult from './components/DataResult';
 
 const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
 
 export default function App() {
   const [dataSource, setDataSource] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    message: '',
+    success: false
+
+  });
   const [returnData, setReturnData] = useState();
   const [maxLabel, setMaxLabel] = useState(10);
   const [minConfidence, setMinConfidence] = useState(70);
-  const { language, translations, handleLanguageChange } = useLanguage();
+  const { translations } = useLanguage();
 
   const handleSubmitAnalyze = async (e) => {
     e.preventDefault();
@@ -21,7 +28,8 @@ export default function App() {
     let returnUrl = '';
 
     if (!file) {
-      setError('Please select a file');
+      setError({ message: 'errorFileUpload', success: false });
+
       return;
     }
     const formData = new FormData();
@@ -34,14 +42,12 @@ export default function App() {
       })
         .then(res => res.json())
         .then(data => {
-          console.log('data: ', data);
           returnUrl = data.url;
           if (data.status === 500) {
-            throw new Error(data.error);
+            throw new Error('errorFileUpload');
           }
-        })
-        .catch(err => {
-          throw err;
+          setError({ message: 'successFileUpload', success: true });
+          return data.url;
         })
         .finally(async () => {
           await fetch(`${API_URL_ANALYZE}/analyze`, {
@@ -58,19 +64,17 @@ export default function App() {
             .then(res => res.json())
             .then(data => {
               setReturnData({ ...data.data, url: returnUrl });
-
               setMaxLabel(10);
               setMinConfidence(70);
               setDataSource('');
             })
             .catch(err => {
-              throw err;
-            })
+              setError({ message: 'errorAnalysis', success: false });
+            });
         })
     }
     catch (err) {
-      console.log('err: ', err);
-      setError(err);
+      setError({ message: err.message, success: false });
     }
 
   }
@@ -98,8 +102,7 @@ export default function App() {
       link.click();
       link.parentNode.removeChild(link);
     } catch (err) {
-      console.error('Error:', err);
-      setError(err.message);
+      setError({ message: err.message, success: false });
     }
   };
 
@@ -108,52 +111,33 @@ export default function App() {
   };
 
   return (
-    <>
+    <div>
+      <Error message={error.message} success={error.success} />
+
+      <Languages />
+
+      <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
+        <h1>{translations.title}</h1>
+        <p>{translations.description}</p>
+        <label htmlFor="dataSource">{translations.dataSource}</label>
+        <br />
+        <FileUpload handleUploadedFiles={handleUploadedFiles} />
+        <label htmlFor="maxLabel">{translations.maxLabel}</label>
+        <input type="number" name="maxLabel" id="maxLabel" value={maxLabel} onChange={(e) => setMaxLabel(e.target.value)} min={1} />
+        <label htmlFor="minConfidence">{translations.minConfidence}</label>
+        <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} max={100} />
+        <br />
+        <button>{translations.analyze}</button>
+      </form>
+
       <div>
-        <div>
-          {error && <div>{error}</div>}
-        </div>
-
-        <form>
-          <select id="language" value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
-            <option value="en">English</option>
-            <option value="fr">French</option>
-          </select>
-
-        </form>
-
-        <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
-          <h1>{translations.title}</h1>
-          <p>{translations.description}</p>
-          <label htmlFor="dataSource">{translations.dataSource}</label>
-          <br />
-          <FileUpload handleUploadedFiles={handleUploadedFiles} />
-          <label htmlFor="maxLabel">{translations.maxLabel}</label>
-          <input type="number" name="maxLabel" id="maxLabel" value={maxLabel} onChange={(e) => setMaxLabel(e.target.value)} min={1} />
-          <label htmlFor="minConfidence">{translations.minConfidence}</label>
-          <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} />
-          <br />
-          <button>{translations.analyze}</button>
-        </form>
-
-        <div>
-          {returnData && (
-            <>
-              {returnData.numberOfLabel > 0 && <div>{translations.labels}: {returnData.numberOfLabel}</div>}
-              {returnData.MinConfidence > 0 && <div>{translations.confidence}: {returnData.MinConfidence.toFixed(2)}%</div>}
-              {returnData.averageConfidence > 0 && <div>{translations.averageConfidence}: {returnData.averageConfidence.toFixed(2)}%</div>}
-              <br />
-              {returnData.Labels?.map((label, index) => (
-                <div key={index}>
-                  <div>{label.Name} à {label.Confidence.toFixed(2)}%</div>
-                </div>
-              ))}
-
-              <button onClick={() => handleDownloadSQL()}>{translations.downloadSQL}</button>
-            </>
-          )}
-        </div>
-      </div >
-    </>
+        {returnData && (
+          <>
+            <DataResult dataResult={returnData} />
+            <button onClick={() => handleDownloadSQL()}>{translations.downloadSQL}</button>
+          </>
+        )}
+      </div>
+    </div >
   )
 }
