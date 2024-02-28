@@ -1,5 +1,6 @@
 {
     "en": {
+        "language": "English",
         "title": "Image analysis",
         "description": "Analyze an image with a machine learning model.",
         "dataSource": "Data source",
@@ -10,9 +11,11 @@
         "confidence": "Confidence",
         "averageConfidence": "Average confidence",
         "downloadSQL": "Download SQL",
-        "labelFileUpload": "Drag and drop files here or click to browse"
+        "labelFileUpload": "Drag and drop files here or click to browse",
+        "labelLanguage": "Choose language"
     },
     "fr": {
+        "language": "Français",
         "title": "Analyse d'image",
         "description": "Analyser une image avec un modèle de machine learning.",
         "dataSource": "Source de données",
@@ -23,9 +26,11 @@
         "confidence": "Confiance",
         "averageConfidence": "Confiance moyenne",
         "downloadSQL": "Télécharger SQL",
-        "labelFileUpload": "Glisser-déposer des fichiers ici ou cliquer pour parcourir"
+        "labelFileUpload": "Glisser-déposer des fichiers ici ou cliquer pour parcourir",
+        "labelLanguage": "Choisir la langue"
     },
     "all": {
+        "language": "Deutsch",
         "title": "Beeldanalyse",
         "description": "Analyseer een afbeelding met een machine learning model.",
         "dataSource": "Gegevensbron",
@@ -36,6 +41,7 @@
         "confidence": "Vertrouwen",
         "averageConfidence": "Gemiddeld vertrouwen",
         "downloadSQL": "Download SQL",
-        "labelFileUpload": "Sleep bestanden hierheen of klik om te bladeren"
+        "labelFileUpload": "Sleep bestanden hierheen of klik om te bladeren",
+        "labelLanguage": "Kies taal"
     }
 }

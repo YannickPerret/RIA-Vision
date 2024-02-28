@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './styles/App.css'
 import FileUpload from './components/FileUpload';
 import { useLanguage } from './providers/languages';
+import Languages from './components/Languages';
 
 const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
@@ -114,14 +115,7 @@ export default function App() {
           {error && <div id="error">{error}</div>}
         </div>
 
-        <form>
-          <select id="language" value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
-            <option value="en">English</option>
-            <option value="fr">French</option>
-            <option value="all">Allemand</option>
-          </select>
-
-        </form>
+        <Languages />
 
         <form onSubmit={handleSubmitAnalyze} encType="multipart/form-data">
           <h1>{translations.title}</h1>
