@@ -111,13 +111,14 @@ export default function App() {
     <>
       <div>
         <div>
-          {error && <div>{error}</div>}
+          {error && <div id="error">{error}</div>}
         </div>
 
         <form>
           <select id="language" value={language} onChange={(e) => handleLanguageChange(e.target.value)}>
             <option value="en">English</option>
             <option value="fr">French</option>
+            <option value="all">Allemand</option>
           </select>
 
         </form>
@@ -131,7 +132,7 @@ export default function App() {
           <label htmlFor="maxLabel">{translations.maxLabel}</label>
           <input type="number" name="maxLabel" id="maxLabel" value={maxLabel} onChange={(e) => setMaxLabel(e.target.value)} min={1} />
           <label htmlFor="minConfidence">{translations.minConfidence}</label>
-          <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} />
+          <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} max={100} />
           <br />
           <button>{translations.analyze}</button>
         </form>

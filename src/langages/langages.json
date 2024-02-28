@@ -24,5 +24,18 @@
         "averageConfidence": "Confiance moyenne",
         "downloadSQL": "Télécharger SQL",
         "labelFileUpload": "Glisser-déposer des fichiers ici ou cliquer pour parcourir"
+    },
+    "all": {
+        "title": "Beeldanalyse",
+        "description": "Analyseer een afbeelding met een machine learning model.",
+        "dataSource": "Gegevensbron",
+        "maxLabel": "Max label",
+        "minConfidence": "Min vertrouwen",
+        "analyze": "Analyseren",
+        "labels": "Labels",
+        "confidence": "Vertrouwen",
+        "averageConfidence": "Gemiddeld vertrouwen",
+        "downloadSQL": "Download SQL",
+        "labelFileUpload": "Sleep bestanden hierheen of klik om te bladeren"
     }
 }

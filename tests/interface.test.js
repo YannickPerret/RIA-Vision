@@ -25,8 +25,23 @@ test.describe('React View BDD Tests', () => {
         await page.click('#submit-button');
         await expect(page.locator('text=Please select a file')).toBeVisible();
     });
+});
 
-    // Test submitting the form with changed values
+test.describe('Form Submission Tests', () => {
+
+    test.beforeEach(async ({ page }) => {
+        await page.goto('http://localhost:5173');
+    });
+
+    test('submit form with non-conform minConfidence value', async ({ page }) => {
+        await page.setInputFiles('input[type="file"]', 'tests/images/valid.jpg');
+        await page.fill('#maxLabel', '10');
+        await page.fill('#minConfidence', '101');
+        await page.click('button >> text=Analyze');
+        await page.waitForSelector('text=minConfidence must be between 0 and 100');
+        await expect(page.locator('text=minConfidence must be between 0 and 100')).toBeVisible();
+    });
+
     test('submit form with changed values for maxLabel and minConfidence', async ({ page }) => {
         await page.setInputFiles('#dataSource', 'path/to/test-image.png');
         await page.fill('#maxLabel', '5');
