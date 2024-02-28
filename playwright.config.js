@@ -3,7 +3,7 @@ import { devices, defineConfig } from '@playwright/test';
 export default defineConfig({
     testDir: './tests',
     use: {
-        headless: false,
+        headless: true,
         viewport: { width: 1280, height: 720 },
         baseURL: 'http://127.0.0.1:5173/',
     },

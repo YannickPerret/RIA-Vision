@@ -7,7 +7,12 @@ const FileUpload = ({ handleUploadedFiles }) => {
     const { translations } = useLanguage();
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
+        accept: {
+            'image/jpeg': [],
+            'image/png': [],
+            'image/webp': [],
+            'image/heic': [],
+        },
         maxFiles: 1,
         onDrop: (acceptedFiles) => {
             setUploadedFiles(acceptedFiles);
@@ -17,7 +22,7 @@ const FileUpload = ({ handleUploadedFiles }) => {
 
     return (
         <div {...getRootProps()} style={{ border: '3px dashed black', margin: '20px', padding: '20px' }}>
-            <input {...getInputProps()} />
+            <input {...getInputProps()} id='fileUpload' />
             <p>{translations.labelFileUpload}</p>
             <ul>
                 {uploadedFiles.map((file) => (
