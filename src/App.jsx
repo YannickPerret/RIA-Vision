@@ -4,6 +4,7 @@ import FileUpload from './components/FileUpload';
 import { useLanguage } from './providers/languages';
 import Languages from './components/Languages';
 import Error from './components/Error';
+import DataResult from './components/DataResult';
 
 const API_URL_BUCKET = 'http://localhost:28468';
 const API_URL_ANALYZE = 'http://localhost:28469';
@@ -48,7 +49,7 @@ export default function App() {
           setError({ message: 'successFileUpload', success: true });
           return data.url;
         })
-        .then(async () => {
+        .finally(async () => {
           await fetch(`${API_URL_ANALYZE}/analyze`, {
             method: 'POST',
             headers: {
@@ -63,7 +64,6 @@ export default function App() {
             .then(res => res.json())
             .then(data => {
               setReturnData({ ...data.data, url: returnUrl });
-
               setMaxLabel(10);
               setMinConfidence(70);
               setDataSource('');
@@ -133,16 +133,7 @@ export default function App() {
       <div>
         {returnData && (
           <>
-            {returnData.numberOfLabel > 0 && <div>{translations.labels}: {returnData.numberOfLabel}</div>}
-            {returnData.MinConfidence > 0 && <div>{translations.confidence}: {returnData.MinConfidence.toFixed(2)}%</div>}
-            {returnData.averageConfidence > 0 && <div>{translations.averageConfidence}: {returnData.averageConfidence.toFixed(2)}%</div>}
-            <br />
-            {returnData.Labels?.map((label, index) => (
-              <div key={index}>
-                <div>{label.Name} à {label.Confidence.toFixed(2)}%</div>
-              </div>
-            ))}
-
+            <DataResult dataResult={returnData} />
             <button onClick={() => handleDownloadSQL()}>{translations.downloadSQL}</button>
           </>
         )}
