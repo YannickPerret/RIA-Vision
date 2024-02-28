@@ -14,7 +14,6 @@ const FileUpload = ({ handleUploadedFiles }) => {
             handleUploadedFiles(acceptedFiles);
         },
     });
-    console.log('translations: ', translations);
 
     return (
         <div {...getRootProps()} style={{ border: '3px dashed black', margin: '20px', padding: '20px' }}>
