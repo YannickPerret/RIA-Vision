@@ -127,14 +127,14 @@ export default function App() {
         <label htmlFor="minConfidence">{translations.minConfidence}</label>
         <input type="number" name="minConfidence" id="minConfidence" value={minConfidence} onChange={(e) => setMinConfidence(e.target.value)} min={1} max={100} />
         <br />
-        <button>{translations.analyze}</button>
+        <button id="analyzeButton">{translations.analyze}</button>
       </form>
 
       <div>
         {returnData && (
           <>
             <DataResult dataResult={returnData} />
-            <button onClick={() => handleDownloadSQL()}>{translations.downloadSQL}</button>
+            <button onClick={() => handleDownloadSQL()} id="downloadSQL">{translations.downloadSQL}</button>
           </>
         )}
       </div>
