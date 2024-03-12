@@ -1,5 +1,5 @@
 export default {
     testPathIgnorePatterns: [
-        "<rootDir>/tests/"
+        "<rootDir>/frontend/tests/"
     ],
 };
