@@ -4,3 +4,6 @@
 [submodule "labelDetector"]
 	path = labelDetector
 	url = https://github.com/YannickPerret/Bi_labelDetector.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/CPNV-ES-RIA2/YANNICK
