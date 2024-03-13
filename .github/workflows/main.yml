@@ -1,4 +1,5 @@
 name: Workflow for CI/CD with GitHub Actions and run test
+
 on:
   push:
     branches:
@@ -6,20 +7,40 @@ on:
       - develop
 
 jobs:
-  test-backend:
+  backend-setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install the dependencies
+      - name: Configurer Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Installer les dépendances pour labelDetector
         run: npm install
-      - name: Run the backend tests
-        run: npm run test
+        working-directory: ./labelDetector
+      - name: Démarrer le backend labelDetector
+        run: npm start &
+        working-directory: ./labelDetector
+      - name: Installer les dépendances pour dataObject
+        run: npm install
+        working-directory: ./dataObject
+      - name: Démarrer le backend dataObject
+        run: npm start &
+        working-directory: ./dataObject
 
   test-frontend:
+    needs: backend-setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install the dependencies
+      - name: Configurer Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Installer les dépendances frontend
         run: npm install
-      - name: Run the frontend tests
-        run: npm run test:frontend
+        working-directory: ./frontend
+      - name: Exécuter les tests frontend
+        run: npm test
+        working-directory: ./frontend
+
