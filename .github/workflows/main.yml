@@ -1,0 +1,25 @@
+name: Workflow for CI/CD with GitHub Actions and run test
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install the dependencies
+        run: npm install
+      - name: Run the backend tests
+        run: npm run test
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install the dependencies
+        run: npm install
+      - name: Run the frontend tests
+        run: npm run test:frontend
