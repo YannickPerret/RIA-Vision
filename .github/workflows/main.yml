@@ -1,46 +1,46 @@
-name: Workflow for CI/CD with GitHub Actions and run test
-
+name: Workflow for CI/CD with GitHub Actions and run tests
 on:
   push:
     branches:
       - main
       - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  backend-setup:
+  build-and-test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Configurer Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - name: Installer les dépendances pour labelDetector
-        run: npm install
-        working-directory: ./labelDetector
-      - name: Démarrer le backend labelDetector
-        run: npm start &
-        working-directory: ./labelDetector
-      - name: Installer les dépendances pour dataObject
-        run: npm install
-        working-directory: ./dataObject
-      - name: Démarrer le backend dataObject
-        run: npm start &
-        working-directory: ./dataObject
 
-  test-frontend:
-    needs: backend-setup
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Configurer Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - name: Installer les dépendances frontend
-        run: npm install
-        working-directory: ./frontend
-      - name: Exécuter les tests frontend
-        run: npm test
-        working-directory: ./frontend
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install main dependencies
+      run: npm install
+
+    - name: Install dataObject dependencies
+      run: |
+        cd dataObject
+        npm install
+
+    - name: Install labelDetector dependencies
+      run: |
+        cd labelDetector
+        npm install
+
+    - name: Start backend and frontend
+      run: npm run dev:all &
+
+    - name: Run backend tests
+      run: npm test
+
+    - name: Run frontend tests
+      run: npm run test:frontend
