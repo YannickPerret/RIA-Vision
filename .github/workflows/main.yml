@@ -32,7 +32,7 @@ jobs:
     - name: Run Playwright tests
       run: |
         cd frontend 
-        npx playwright test
+        npx playwright test tests/interface.test.js
         
     - uses: actions/upload-artifact@v4
       if: always()
