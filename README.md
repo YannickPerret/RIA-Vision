@@ -459,8 +459,6 @@ Télécharge un fichier SQL contenant les informations des images analysées.
 │   │   ├── download
 │   │   └── images
 │   └── uploads
-├── dist
-│   └── assets
 ├── labelDetector //nodejs AWS Rekognition et RethinkDB
 │   ├── lib
 │   │   ├── database
@@ -470,14 +468,15 @@ Télécharge un fichier SQL contenant les informations des images analysées.
 │   ├── tests
 │   │   ├── download
 │   │   └── images
+├── frontend
 ├── public
-├── src           //ReactJS
-│   ├── assets
-│   ├── components
-│   └── styles
-└── tests
-    └── images
-        └── tests
+│   ├── src           //ReactJS
+│   │   ├── assets
+│   │   ├── components
+│   │   └── styles
+│   └── tests
+│       └── images
+│           └── tests
 ```
 
 ## Contribuer au Projet
