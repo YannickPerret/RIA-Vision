@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+  labeldetector:
+    container_name: labelDetectorTest
+    build:
+      context: ./labelDetector
+      dockerfile: Dockerfile
+      target: test
+    env_file:
+      - .env.docker
+    networks:
+      - app-network
+
+  dataobject:
+    container_name: dataObjectTest
+    build:
+      context: ./dataObject
+      dockerfile: Dockerfile
+      target: test
+    env_file:
+      - .env.docker
+    networks:
+      - app-network
+
+  frontend:
+    container_name: frontendTest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      - NODE_ENV=test
+    depends_on:
+      - labeldetector
+      - dataobject
+      - gateway
+    networks:
+      - app-network
+
+  rethinkdb:
+    container_name: rethinkdb
+    image: rethinkdb:latest
+    ports:
+      - "8081:8080"
+      - "28015:28015"
+    restart: always
+    volumes:
+      - rethinkdb_data:/data
+    networks:
+      - app-network
+
+  gateway:
+    container_name: gateway
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  rethinkdb_data:
+
+

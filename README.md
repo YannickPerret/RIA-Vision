@@ -1,18 +1,42 @@
-# B1-Vision 
+# B1-Vision - RIA 2
 
 ## Description
 
 Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite analysée par un moteur d'intelligence artificielle pour générer des labels précis et pertinents.
 
-### Features
+### Fonctionnalités
 - Upload d'Image : Interface utilisateur conviviale pour uploader facilement des images.
 - Reconnaissance IA : Utilisation d'AWS Rekognition pour une analyse d'image fiable et avancée. La flexibilité du système permet une intégration future avec d'autres API de reconnaissance d'image.
 - Technologies Utilisées : Développé avec Node.js et React.js, garantissant une expérience utilisateur fluide et une intégration backend robuste.
 - Enregistre vos images sur le cloud et votre analyse dans une base de données
 
+### Choix Technologiques
+
+Le développement s'appuie sur des choix technologiques stratégiques visant à exploiter les avantages des outils et frameworks modernes les plus performants et populaires. Ma sélection s'aligne sur les tendances actuelles et les meilleures pratiques de l'industrie, comme le souligne l'enquête annuelle State of JS, un graphiqu est disponible [ici](https://github.com/YannickPerret/RIA-Vision/blob/cb9c04847935a2dd4b9b651d38e5a9893965cd3b/docs/MostUseJsLibrary.png)
+
+#### Frontend
+
+- **React.js :** J'ai opté pour React.js pour le développement du frontend en raison de sa grande popularité, de sa communauté active et de son écosystème riche. React offre une approche efficace pour construire des interfaces utilisateur dynamiques et réactives, facilitant la gestion de l'état de l'application et le rendu des composants.
+  
+- **Playwright :** Pour le test de notre application frontend, J'utilise Playwright. Ce choix est motivé par les capacités avancées de Playwright en matière de tests d'interface utilisateur, permettant des tests automatisés rapides, fiables et multi-navigateurs.
+
+#### Backend
+
+- **Node.js :** Le backend repose sur Node.js, une plateforme côté serveur puissante et flexible qui permet d'exécuter JavaScript, le langage choisi pour tout le projet. Cela favorise une cohérence et une efficacité accrues dans le développement.
+
+- **Jest :** Pour les tests backend, Jest est notre outil de prédilection. Reconnu pour sa simplicité et sa rapidité, Jest fournit un cadre de test unifié qui s'adapte bien aux applications Node.js, rendant les tests plus cohérents et faciles à gérer.
+
+#### Justification
+
+Le choix de ces technologies s'aligne sur les tendances actuelles et les retours de la communauté des développeurs, comme en témoignent les résultats de l'enquête State of JS. En m'appuyant sur ces outils et frameworks, J'assure une base solide et moderne pour mon application, tout en facilitant la collaboration et l'adoption par d'autres développeurs.
+
+## Schema d'architecture
+Le schema du l'architecture est disponible dans le dossier `docs` à la racine du projet où vous trouverez le fichier [architecture](https://github.com/YannickPerret/RIA-Vision/blob/da11f0b3cd3d7a980f45cbbd81d5759b4652023a/docs/schema_microservice_2.svg) au format SVG.
+
+
 ## Getting Started
 
-### Prerequisites
+### Pré-requis
 
 Retrouvez la liste de tout les pré-requis pour lancer le projet.
 
@@ -23,10 +47,11 @@ Retrouvez la liste de tout les pré-requis pour lancer le projet.
 * Environmment Node.js : minimum v21.0.0 
 * AWS-CLI : 2.0.0 (pour les tests)
 * AWS Rekognition SDK V2 !
+* Reactjs : 18.2.0
 
 ### Configuration
 
-#### Clone the repository
+#### Cloner le Projet
 Récupérer le projet sur votre machine en utilisant la commande suivante :
 ```bash
 git clone --recurse-submodules https://github.com/YannickPerret/BI1-Vision.git bi1-vision
@@ -101,17 +126,17 @@ Submodule path 'labelDetector': checked out '5e13d50265ca67d4f9f060d99386210dc90
     ```
    - Le serveur RethinkDB démarre généralement sur le port `8080`. Accédez à `http://localhost:8080` pour visualiser le tableau de bord.
 
-#### Environment variables
+#### Variables d'Environnement
 Il faut ensuite copie le .env.example en .env et remplir les informations de connexion au SDK d'aws et pour la base de donnée RethinkDB
 
 ```bash
 cp .env.example .env
 ```
 
-## Deployment
+## Installation
 > :warning: **La suite de la procédure est executée pour un environnement MacOs** Les commandes peuvent différer selon votre environnement.
 
-### On dev environment
+### Sur l'environnement de développement
 Une fois le projet cloné et les prérequis installé, il faut installer les dépendances du projet avec la commande suivante :
 ```bash
 npm install
@@ -262,7 +287,42 @@ Time:        3.838 s, estimated 4 s
 Ran all test suites.
 ```
 
-### On integration environment
+Pour lancer un test spécifique, utilisez la commande suivante : 
+```bash
+jest tests
+```
+
+par exemple : 
+```bash
+jest labelDetector/tests/LabelDetector.test.js 
+```
+avec le resultat suivant : 
+```bash
+tchoune@yannicks-MacBook-Pro bi1-vision % jest labelDetector/tests/LabelDetector.test.js 
+watchman warning:  opendir(/Users/tchoune/Library/Containers/com.apple.corerecents.recentsd/Data/Library/Recents) -> Operation not permitted. Marking this portion of the tree deleted
+To clear this warning, run:
+`watchman watch-del '/Users/tchoune' ; watchman watch-project '/Users/tchoune'`
+
+(node:68111) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+ PASS  labelDetector/tests/LabelDetector.test.js
+  ✓ Analyze_LocalFileWithDefaultValues_ImageAnalyzed (833 ms)
+  ✓ Analyze_RemoteImageWithDefaultValues_ImageAnalyzed (608 ms)
+  ✓ Analyze_RemoteImageWithCustomMaxLabelValue_ImageAnalyzed (346 ms)
+  ✓ Analyze_RemoteImageWithCustomMinConfidenceLevelValue_ImageAnalyzed (318 ms)
+  ✓ Analyze_RemoteImageWithCustomValues_ImageAnalyzed (319 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        2.721 s, estimated 3 s
+Ran all test suites matching /labelDetector\/tests\/LabelDetector.test.js/i.
+```
+
+### Sur l'environnement de production
 
 Commençons par build l'interface web avec la commande suivante : 
 ```bash
@@ -288,7 +348,76 @@ Chaque service peut être lancer indépendamment des autres. Pour cela, il faut 
 npm run dev
 ```
 
+## Docker Configuration
 
+### Prérequis Docker
+
+Assurez-vous d'avoir Docker et Docker Compose installés sur votre machine. Vous pouvez vérifier si Docker est installé en exécutant :
+
+```bash
+docker --version
+```
+
+Et pour Docker Compose :
+
+```bash
+docker-compose --version
+```
+
+Si vous n'avez pas Docker, suivez les instructions d'installation sur le [site officiel de Docker](https://docs.docker.com/get-docker/).
+
+### Configuration de l'environnement
+
+1. **Copiez le fichier d'exemple des variables d'environnement et configurez-le selon vos besoins.** 
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Remplissez les valeurs nécessaires dans le fichier `.env` pour assurer la bonne configuration des services.
+
+### Lancement des services avec Docker
+
+#### Environnement de Production
+
+Pour lancer l'application en mode production, utilisez la commande suivante :
+
+```bash
+docker-compose -f docker-compose.production.yml up --build
+```
+
+Cette commande va construire et démarrer tous les services définis dans le fichier `docker-compose.production.yml`.
+
+#### Environnement de Test
+
+Pour exécuter les tests, utilisez :
+
+```bash
+docker-compose -f docker-compose.test.yml up --build
+```
+
+Cette commande prépare l'environnement de test et exécute les tests comme défini dans `docker-compose.test.yml`.
+
+### Arrêt des services Docker
+
+Pour arrêter les services et nettoyer les conteneurs, vous pouvez utiliser la commande suivante :
+
+```bash
+docker-compose -f docker-compose.[environment].yml down
+```
+
+Remplacez `[environment]` par `production` ou `test` selon le fichier que vous utilisez.
+
+
+#### Mode Hors Ligne en Production
+
+L'application supporte un mode hors ligne grâce à l'implémentation d'un service worker. Une fois que vous avez visité l'application en ligne, elle sera capable de charger les ressources en cache même si vous perdez votre connexion internet. Voici comment cela fonctionne en production :
+
+##### Fonctionnement
+
+- Lors de la première visite de l'utilisateur, le service worker met en cache les ressources essentielles (par exemple, les fichiers HTML, CSS, et JavaScript).
+- Lors des visites ultérieures, si l'utilisateur est hors ligne, le service worker sert les ressources à partir du cache, permettant à l'application de fonctionner sans connexion internet.
+- Les nouvelles mises à jour du site seront récupérées par le service worker en arrière-plan lorsqu'une connexion est disponible, garantissant que l'utilisateur a toujours la version la plus récente.
 
 ### Routes API
 Le sous-module `dataObject` est utilisé pour envoyer et récupérer des images depuis un bucket Amazon S3.
@@ -320,7 +449,7 @@ Télécharge un fichier SQL contenant les informations des images analysées.
   - Succès : Fichier SQL pour insertion dans une base de données.
   - Erreur : `{ error: 'message d'erreur' }`
 
-## Directory structure
+## Structure du Projet
 
 ```shell
 .
@@ -330,8 +459,6 @@ Télécharge un fichier SQL contenant les informations des images analysées.
 │   │   ├── download
 │   │   └── images
 │   └── uploads
-├── dist
-│   └── assets
 ├── labelDetector //nodejs AWS Rekognition et RethinkDB
 │   ├── lib
 │   │   ├── database
@@ -341,17 +468,18 @@ Télécharge un fichier SQL contenant les informations des images analysées.
 │   ├── tests
 │   │   ├── download
 │   │   └── images
+├── frontend
 ├── public
-├── src           //ReactJS
-│   ├── assets
-│   ├── components
-│   └── styles
-└── tests
-    └── images
-        └── tests
+│   ├── src           //ReactJS
+│   │   ├── assets
+│   │   ├── components
+│   │   └── styles
+│   └── tests
+│       └── images
+│           └── tests
 ```
 
-## Collaborate
+## Contribuer au Projet
 
   ### Convention de Nommage
   Nous suivons une convention de nommage claire pour assurer une lisibilité et une maintenabilité élevées du code. Voici quelques exemples basés sur votre code :
@@ -393,4 +521,4 @@ Le projet est sous licence MIT
 
 ## Contact
 
-Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com
+Yannick Perret - support par email exclusivement :  dev[at]yannickperret.com ou via une issue sur le projet github
