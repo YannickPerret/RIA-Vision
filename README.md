@@ -10,7 +10,6 @@ Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite an
 - Technologies Utilisées : Développé avec Node.js et React.js, garantissant une expérience utilisateur fluide et une intégration backend robuste.
 - Enregistre vos images sur le cloud et votre analyse dans une base de données
 
-
 ### Choix Technologiques
 
 Le développement s'appuie sur des choix technologiques stratégiques visant à exploiter les avantages des outils et frameworks modernes les plus performants et populaires. Ma sélection s'aligne sur les tendances actuelles et les meilleures pratiques de l'industrie, comme le souligne l'enquête annuelle State of JS.
@@ -30,6 +29,10 @@ Le développement s'appuie sur des choix technologiques stratégiques visant à 
 #### Justification
 
 Le choix de ces technologies s'aligne sur les tendances actuelles et les retours de la communauté des développeurs, comme en témoignent les résultats de l'enquête State of JS. En m'appuyant sur ces outils et frameworks, J'assure une base solide et moderne pour mon application, tout en facilitant la collaboration et l'adoption par d'autres développeurs.
+
+## Schema d'architecture
+Le schema du l'architecture est disponible dans le dossier `docs` à la racine du projet où vous trouverez le fichier [architecture](https://github.com/YannickPerret/RIA-Vision/blob/da11f0b3cd3d7a980f45cbbd81d5759b4652023a/docs/schema_microservice_2.svg) au format SVG.
+
 
 ## Getting Started
 
