@@ -12,7 +12,7 @@ Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite an
 
 ### Choix Technologiques
 
-Le développement s'appuie sur des choix technologiques stratégiques visant à exploiter les avantages des outils et frameworks modernes les plus performants et populaires. Ma sélection s'aligne sur les tendances actuelles et les meilleures pratiques de l'industrie, comme le souligne l'enquête annuelle State of JS.
+Le développement s'appuie sur des choix technologiques stratégiques visant à exploiter les avantages des outils et frameworks modernes les plus performants et populaires. Ma sélection s'aligne sur les tendances actuelles et les meilleures pratiques de l'industrie, comme le souligne l'enquête annuelle State of JS, un graphiqu est disponible [ici](https://github.com/YannickPerret/RIA-Vision/blob/cb9c04847935a2dd4b9b651d38e5a9893965cd3b/docs/MostUseJsLibrary.png)
 
 #### Frontend
 
