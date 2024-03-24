@@ -10,6 +10,27 @@ Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite an
 - Technologies Utilisées : Développé avec Node.js et React.js, garantissant une expérience utilisateur fluide et une intégration backend robuste.
 - Enregistre vos images sur le cloud et votre analyse dans une base de données
 
+
+### Choix Technologiques
+
+Le développement s'appuie sur des choix technologiques stratégiques visant à exploiter les avantages des outils et frameworks modernes les plus performants et populaires. Ma sélection s'aligne sur les tendances actuelles et les meilleures pratiques de l'industrie, comme le souligne l'enquête annuelle State of JS.
+
+#### Frontend
+
+- **React.js :** J'ai opté pour React.js pour le développement du frontend en raison de sa grande popularité, de sa communauté active et de son écosystème riche. React offre une approche efficace pour construire des interfaces utilisateur dynamiques et réactives, facilitant la gestion de l'état de l'application et le rendu des composants.
+  
+- **Playwright :** Pour le test de notre application frontend, J'utilise Playwright. Ce choix est motivé par les capacités avancées de Playwright en matière de tests d'interface utilisateur, permettant des tests automatisés rapides, fiables et multi-navigateurs.
+
+#### Backend
+
+- **Node.js :** Le backend repose sur Node.js, une plateforme côté serveur puissante et flexible qui permet d'exécuter JavaScript, le langage choisi pour tout le projet. Cela favorise une cohérence et une efficacité accrues dans le développement.
+
+- **Jest :** Pour les tests backend, Jest est notre outil de prédilection. Reconnu pour sa simplicité et sa rapidité, Jest fournit un cadre de test unifié qui s'adapte bien aux applications Node.js, rendant les tests plus cohérents et faciles à gérer.
+
+#### Justification
+
+Le choix de ces technologies s'aligne sur les tendances actuelles et les retours de la communauté des développeurs, comme en témoignent les résultats de l'enquête State of JS. En m'appuyant sur ces outils et frameworks, J'assure une base solide et moderne pour mon application, tout en facilitant la collaboration et l'adoption par d'autres développeurs.
+
 ## Getting Started
 
 ### Pré-requis
@@ -324,7 +345,76 @@ Chaque service peut être lancer indépendamment des autres. Pour cela, il faut 
 npm run dev
 ```
 
+## Docker Configuration
 
+### Prérequis Docker
+
+Assurez-vous d'avoir Docker et Docker Compose installés sur votre machine. Vous pouvez vérifier si Docker est installé en exécutant :
+
+```bash
+docker --version
+```
+
+Et pour Docker Compose :
+
+```bash
+docker-compose --version
+```
+
+Si vous n'avez pas Docker, suivez les instructions d'installation sur le [site officiel de Docker](https://docs.docker.com/get-docker/).
+
+### Configuration de l'environnement
+
+1. **Copiez le fichier d'exemple des variables d'environnement et configurez-le selon vos besoins.** 
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Remplissez les valeurs nécessaires dans le fichier `.env` pour assurer la bonne configuration des services.
+
+### Lancement des services avec Docker
+
+#### Environnement de Production
+
+Pour lancer l'application en mode production, utilisez la commande suivante :
+
+```bash
+docker-compose -f docker-compose.production.yml up --build
+```
+
+Cette commande va construire et démarrer tous les services définis dans le fichier `docker-compose.production.yml`.
+
+#### Environnement de Test
+
+Pour exécuter les tests, utilisez :
+
+```bash
+docker-compose -f docker-compose.test.yml up --build
+```
+
+Cette commande prépare l'environnement de test et exécute les tests comme défini dans `docker-compose.test.yml`.
+
+### Arrêt des services Docker
+
+Pour arrêter les services et nettoyer les conteneurs, vous pouvez utiliser la commande suivante :
+
+```bash
+docker-compose -f docker-compose.[environment].yml down
+```
+
+Remplacez `[environment]` par `production` ou `test` selon le fichier que vous utilisez.
+
+
+#### Mode Hors Ligne en Production
+
+L'application supporte un mode hors ligne grâce à l'implémentation d'un service worker. Une fois que vous avez visité l'application en ligne, elle sera capable de charger les ressources en cache même si vous perdez votre connexion internet. Voici comment cela fonctionne en production :
+
+##### Fonctionnement
+
+- Lors de la première visite de l'utilisateur, le service worker met en cache les ressources essentielles (par exemple, les fichiers HTML, CSS, et JavaScript).
+- Lors des visites ultérieures, si l'utilisateur est hors ligne, le service worker sert les ressources à partir du cache, permettant à l'application de fonctionner sans connexion internet.
+- Les nouvelles mises à jour du site seront récupérées par le service worker en arrière-plan lorsqu'une connexion est disponible, garantissant que l'utilisateur a toujours la version la plus récente.
 
 ### Routes API
 Le sous-module `dataObject` est utilisé pour envoyer et récupérer des images depuis un bucket Amazon S3.
