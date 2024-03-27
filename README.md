@@ -389,11 +389,7 @@ docker-compose -f docker-compose.dev.yml up --build
 
 Cette commande va construire et démarrer tous les services définis dans le fichier `docker-compose.production.yml`.
 
-<<<<<<< HEAD
-Attention : Une issue a été ouverte concernant le lancement des tests qui ne fonctionne pas avec PlayWright, se référé à l'issue [ici](https://github.com/YannickPerret/RIA-Vision/issues/26#issue-2197202556)
-=======
 Attention : Une issue a été ouverte concernant le lancement des tests qui ne fonctionne pas avec PlayWright, se référer à l'issue [ici](https://github.com/YannickPerret/RIA-Vision/issues/26#issue-2197202556)
->>>>>>> develop
 
 #### Environnement de Test
 
