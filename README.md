@@ -371,7 +371,7 @@ Si vous n'avez pas Docker, suivez les instructions d'installation sur le [site o
 1. **Copiez le fichier d'exemple des variables d'environnement et configurez-le selon vos besoins.** 
 
    ```bash
-   cp .env.example .env
+   cp .env.example .env.docker
    ```
 
    Remplissez les valeurs nécessaires dans le fichier `.env` pour assurer la bonne configuration des services.
@@ -387,6 +387,8 @@ docker-compose -f docker-compose.production.yml up --build
 ```
 
 Cette commande va construire et démarrer tous les services définis dans le fichier `docker-compose.production.yml`.
+
+Attention : Une issue a été ouverte concernant le lancement des tests qui ne fonctionne pas avec PlayWright, se référé à l'issue [ici](https://github.com/YannickPerret/RIA-Vision/issues/26#issue-2197202556)
 
 #### Environnement de Test
 
