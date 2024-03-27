@@ -9,6 +9,7 @@ Ce service permet aux utilisateurs d'uploader une image, laquelle est ensuite an
 - Reconnaissance IA : Utilisation d'AWS Rekognition pour une analyse d'image fiable et avancée. La flexibilité du système permet une intégration future avec d'autres API de reconnaissance d'image.
 - Technologies Utilisées : Développé avec Node.js et React.js, garantissant une expérience utilisateur fluide et une intégration backend robuste.
 - Enregistre vos images sur le cloud et votre analyse dans une base de données
+- Offline mode
 
 ### Choix Technologiques
 
@@ -383,12 +384,16 @@ Si vous n'avez pas Docker, suivez les instructions d'installation sur le [site o
 Pour lancer l'application en mode production, utilisez la commande suivante :
 
 ```bash
-docker-compose -f docker-compose.production.yml up --build
+docker-compose -f docker-compose.dev.yml up --build
 ```
 
 Cette commande va construire et démarrer tous les services définis dans le fichier `docker-compose.production.yml`.
 
+<<<<<<< HEAD
 Attention : Une issue a été ouverte concernant le lancement des tests qui ne fonctionne pas avec PlayWright, se référé à l'issue [ici](https://github.com/YannickPerret/RIA-Vision/issues/26#issue-2197202556)
+=======
+Attention : Une issue a été ouverte concernant le lancement des tests qui ne fonctionne pas avec PlayWright, se référer à l'issue [ici](https://github.com/YannickPerret/RIA-Vision/issues/26#issue-2197202556)
+>>>>>>> develop
 
 #### Environnement de Test
 
